@@ -1,21 +1,27 @@
 package controller;
 
+import java.util.HashMap;
+
+import view.Login;
 import view.Gestion;
+import connexion.ConnexionBDD;
 
+/**
+ * classe gérant les interactions entre la vue et le modèle
+ * @author Claire
+ *
+ */
 public class Controle {
-	
-	private Gestion frmGestion;
-
-	public static void main(String[] args)
-	{
-		new Controle();
-	}
+	/**
+	 * instance de Login
+	 */
+	private Login frmLogin;
 
 	/**
-	 * Constructeur
+	 * constructeur permettant d'ouvrir la fenêtre de login
 	 */
-	private Controle() {
-		this.frmGestion = new Gestion() ;
-		this.frmGestion.setVisible(true);
+	public Controle() {
+		this.frmLogin = new Login(this) ;
+		this.frmLogin.setVisible(true);
 	}
 }
