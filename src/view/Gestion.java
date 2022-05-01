@@ -24,38 +24,20 @@ import com.toedter.calendar.JDayChooser;
 import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
+/**
+ * classe permettant l'affichage de la fenêtre principale
+ * @author Claire
+ *
+ */
 public class Gestion extends JFrame {
-
-	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Gestion frame = new Gestion();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
+	 * création de la fenêtre
 	 */
 	public Gestion() {
 		setTitle("MediaTek86 - Gestion du personnel");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 950, 725);
-		contentPane = new JPanel();
+		JPanel contentPane = new JPanel();
 		contentPane.setLocation(-495, -538);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -67,25 +49,25 @@ public class Gestion extends JFrame {
 		contentPane.add(pnlPersonnel);
 		pnlPersonnel.setLayout(null);
 		
-		JList list = new JList();
-		list.setBounds(10, 11, 467, 334);
-		pnlPersonnel.add(list);
+		JList lstPersonnel = new JList();
+		lstPersonnel.setBounds(10, 11, 467, 334);
+		pnlPersonnel.add(lstPersonnel);
 		
-		JButton btnNewButton = new JButton("Ajouter");
-		btnNewButton.setBounds(10, 356, 95, 23);
-		pnlPersonnel.add(btnNewButton);
+		JButton btnAjoutPers = new JButton("Ajouter");
+		btnAjoutPers.setBounds(10, 356, 95, 23);
+		pnlPersonnel.add(btnAjoutPers);
 		
-		JButton btnNewButton_1 = new JButton("Modifier");
-		btnNewButton_1.setBounds(111, 356, 95, 23);
-		pnlPersonnel.add(btnNewButton_1);
+		JButton btnModifPers = new JButton("Modifier");
+		btnModifPers.setBounds(111, 356, 95, 23);
+		pnlPersonnel.add(btnModifPers);
 		
-		JButton btnNewButton_2 = new JButton("Supprimer");
-		btnNewButton_2.setBounds(212, 356, 95, 23);
-		pnlPersonnel.add(btnNewButton_2);
+		JButton btnSuppPers = new JButton("Supprimer");
+		btnSuppPers.setBounds(212, 356, 95, 23);
+		pnlPersonnel.add(btnSuppPers);
 		
-		JButton btnNewButton_3 = new JButton("G\u00E9rer les absences");
-		btnNewButton_3.setBounds(328, 357, 149, 23);
-		pnlPersonnel.add(btnNewButton_3);
+		JButton btnGerAbs = new JButton("G\u00E9rer les absences");
+		btnGerAbs.setBounds(328, 357, 149, 23);
+		pnlPersonnel.add(btnGerAbs);
 		
 		JPanel pnlAbsence = new JPanel();
 		pnlAbsence.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -93,21 +75,21 @@ public class Gestion extends JFrame {
 		contentPane.add(pnlAbsence);
 		pnlAbsence.setLayout(null);
 		
-		JButton btnNewButton_4 = new JButton("Ajouter");
-		btnNewButton_4.setBounds(43, 428, 95, 23);
-		pnlAbsence.add(btnNewButton_4);
+		JButton btnAjoutAbs = new JButton("Ajouter");
+		btnAjoutAbs.setBounds(43, 428, 95, 23);
+		pnlAbsence.add(btnAjoutAbs);
 		
-		JButton btnNewButton_1_1 = new JButton("Modifier");
-		btnNewButton_1_1.setBounds(145, 428, 95, 23);
-		pnlAbsence.add(btnNewButton_1_1);
+		JButton btnModifAbs = new JButton("Modifier");
+		btnModifAbs.setBounds(145, 428, 95, 23);
+		pnlAbsence.add(btnModifAbs);
 		
-		JButton btnNewButton_2_1 = new JButton("Supprimer");
-		btnNewButton_2_1.setBounds(246, 428, 95, 23);
-		pnlAbsence.add(btnNewButton_2_1);
+		JButton btnSuppAbs = new JButton("Supprimer");
+		btnSuppAbs.setBounds(246, 428, 95, 23);
+		pnlAbsence.add(btnSuppAbs);
 		
-		JList list_1 = new JList();
-		list_1.setBounds(10, 11, 367, 405);
-		pnlAbsence.add(list_1);
+		JList lstAbsences = new JList();
+		lstAbsences.setBounds(10, 11, 367, 405);
+		pnlAbsence.add(lstAbsences);
 		
 		JPanel pnlModifPersonnel = new JPanel();
 		pnlModifPersonnel.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -115,57 +97,57 @@ public class Gestion extends JFrame {
 		contentPane.add(pnlModifPersonnel);
 		pnlModifPersonnel.setLayout(null);
 		
-		JLabel lblNewLabel_4 = new JLabel("Nom");
-		lblNewLabel_4.setBounds(10, 32, 56, 14);
-		pnlModifPersonnel.add(lblNewLabel_4);
+		JLabel lblLabel0 = new JLabel("Nom");
+		lblLabel0.setBounds(10, 32, 56, 14);
+		pnlModifPersonnel.add(lblLabel0);
 		
-		JLabel lblNewLabel_5 = new JLabel("Pr\u00E9nom");
-		lblNewLabel_5.setBounds(10, 62, 46, 14);
-		pnlModifPersonnel.add(lblNewLabel_5);
+		JLabel lblLabel1 = new JLabel("Pr\u00E9nom");
+		lblLabel1.setBounds(10, 62, 46, 14);
+		pnlModifPersonnel.add(lblLabel1);
 		
-		JLabel lblNewLabel_6 = new JLabel("Service");
-		lblNewLabel_6.setBounds(10, 95, 46, 14);
-		pnlModifPersonnel.add(lblNewLabel_6);
+		JLabel lblLabel2 = new JLabel("Service");
+		lblLabel2.setBounds(10, 95, 46, 14);
+		pnlModifPersonnel.add(lblLabel2);
 		
-		JLabel lblNewLabel_7 = new JLabel("T\u00E9l\u00E9phone");
-		lblNewLabel_7.setBounds(10, 135, 85, 14);
-		pnlModifPersonnel.add(lblNewLabel_7);
+		JLabel lblLabel3 = new JLabel("T\u00E9l\u00E9phone");
+		lblLabel3.setBounds(10, 135, 85, 14);
+		pnlModifPersonnel.add(lblLabel3);
 		
-		JLabel lblNewLabel_8 = new JLabel("E-mail");
-		lblNewLabel_8.setBounds(10, 170, 46, 14);
-		pnlModifPersonnel.add(lblNewLabel_8);
+		JLabel lblLabel4 = new JLabel("E-mail");
+		lblLabel4.setBounds(10, 170, 46, 14);
+		pnlModifPersonnel.add(lblLabel4);
 		
-		textField = new JTextField();
-		textField.setBounds(113, 29, 226, 20);
-		pnlModifPersonnel.add(textField);
-		textField.setColumns(10);
+		JTextField txtNom = new JTextField();
+		txtNom.setBounds(113, 29, 226, 20);
+		pnlModifPersonnel.add(txtNom);
+		txtNom.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(113, 59, 226, 20);
-		pnlModifPersonnel.add(textField_1);
+		JTextField txtPrenom = new JTextField();
+		txtPrenom.setColumns(10);
+		txtPrenom.setBounds(113, 59, 226, 20);
+		pnlModifPersonnel.add(txtPrenom);
 		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(113, 132, 226, 20);
-		pnlModifPersonnel.add(textField_2);
+		JTextField txtTel = new JTextField();
+		txtTel.setColumns(10);
+		txtTel.setBounds(113, 132, 226, 20);
+		pnlModifPersonnel.add(txtTel);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(113, 91, 226, 22);
-		pnlModifPersonnel.add(comboBox);
+		JComboBox cboService = new JComboBox();
+		cboService.setBounds(113, 91, 226, 22);
+		pnlModifPersonnel.add(cboService);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(113, 167, 226, 20);
-		pnlModifPersonnel.add(textField_3);
+		JTextField txtMail = new JTextField();
+		txtMail.setColumns(10);
+		txtMail.setBounds(113, 167, 226, 20);
+		pnlModifPersonnel.add(txtMail);
 		
-		JButton btnNewButton_5 = new JButton("Enregistrer");
-		btnNewButton_5.setBounds(376, 131, 101, 23);
-		pnlModifPersonnel.add(btnNewButton_5);
+		JButton btnSavePers = new JButton("Enregistrer");
+		btnSavePers.setBounds(376, 131, 101, 23);
+		pnlModifPersonnel.add(btnSavePers);
 		
-		JButton btnNewButton_5_1 = new JButton("Annuler");
-		btnNewButton_5_1.setBounds(376, 166, 101, 23);
-		pnlModifPersonnel.add(btnNewButton_5_1);
+		JButton btnCancelPers = new JButton("Annuler");
+		btnCancelPers.setBounds(376, 166, 101, 23);
+		pnlModifPersonnel.add(btnCancelPers);
 		
 		JPanel pnlModifAbsence = new JPanel();
 		pnlModifAbsence.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -173,52 +155,52 @@ public class Gestion extends JFrame {
 		contentPane.add(pnlModifAbsence);
 		pnlModifAbsence.setLayout(null);
 		
-		JLabel lblNewLabel_4_1 = new JLabel("Motif");
-		lblNewLabel_4_1.setBounds(10, 28, 56, 14);
-		pnlModifAbsence.add(lblNewLabel_4_1);
+		JLabel lblLabel5 = new JLabel("Motif");
+		lblLabel5.setBounds(10, 28, 56, 14);
+		pnlModifAbsence.add(lblLabel5);
 		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setBounds(108, 24, 142, 22);
-		pnlModifAbsence.add(comboBox_1);
+		JComboBox cboMotif = new JComboBox();
+		cboMotif.setBounds(108, 24, 142, 22);
+		pnlModifAbsence.add(cboMotif);
 		
-		JLabel lblNewLabel_4_2 = new JLabel("Date de d\u00E9but");
-		lblNewLabel_4_2.setBounds(10, 67, 90, 14);
-		pnlModifAbsence.add(lblNewLabel_4_2);
+		JLabel lblLabel6 = new JLabel("Date de d\u00E9but");
+		lblLabel6.setBounds(10, 67, 90, 14);
+		pnlModifAbsence.add(lblLabel6);
 		
-		JLabel lblNewLabel_4_2_1 = new JLabel("Date de fin");
-		lblNewLabel_4_2_1.setBounds(10, 97, 75, 14);
-		pnlModifAbsence.add(lblNewLabel_4_2_1);
+		JLabel lblLabel7 = new JLabel("Date de fin");
+		lblLabel7.setBounds(10, 97, 75, 14);
+		pnlModifAbsence.add(lblLabel7);
 		
-		JButton btnNewButton_5_2 = new JButton("Enregistrer");
-		btnNewButton_5_2.setBounds(276, 63, 101, 23);
-		pnlModifAbsence.add(btnNewButton_5_2);
+		JButton btnSaveAbs = new JButton("Enregistrer");
+		btnSaveAbs.setBounds(276, 63, 101, 23);
+		pnlModifAbsence.add(btnSaveAbs);
 		
-		JButton btnNewButton_5_1_1 = new JButton("Annuler");
-		btnNewButton_5_1_1.setBounds(276, 93, 101, 23);
-		pnlModifAbsence.add(btnNewButton_5_1_1);
+		JButton btnCancelAbs = new JButton("Annuler");
+		btnCancelAbs.setBounds(276, 93, 101, 23);
+		pnlModifAbsence.add(btnCancelAbs);
 		
-		JDateChooser dateChooser = new JDateChooser();
-		dateChooser.setBounds(108, 61, 142, 20);
-		pnlModifAbsence.add(dateChooser);
+		JDateChooser dtcDateDeb = new JDateChooser();
+		dtcDateDeb.setBounds(108, 61, 142, 20);
+		pnlModifAbsence.add(dtcDateDeb);
 		
-		JDateChooser dateChooser_1 = new JDateChooser();
-		dateChooser_1.setBounds(108, 97, 142, 20);
-		pnlModifAbsence.add(dateChooser_1);
+		JDateChooser dtcDateFin = new JDateChooser();
+		dtcDateFin.setBounds(108, 97, 142, 20);
+		pnlModifAbsence.add(dtcDateFin);
 		
-		JLabel lblNewLabel = new JLabel("Personnel");
-		lblNewLabel.setBounds(10, 11, 99, 14);
-		contentPane.add(lblNewLabel);
+		JLabel lblTitre1 = new JLabel("Personnel");
+		lblTitre1.setBounds(10, 11, 99, 14);
+		contentPane.add(lblTitre1);
 		
-		JLabel lblNewLabel_1 = new JLabel("Absences");
-		lblNewLabel_1.setBounds(551, 11, 371, 14);
-		contentPane.add(lblNewLabel_1);
+		JLabel lblTitre2 = new JLabel("Absences");
+		lblTitre2.setBounds(533, 11, 371, 14);
+		contentPane.add(lblTitre2);
 		
-		JLabel lblNewLabel_2 = new JLabel("Ajouter une personne");
-		lblNewLabel_2.setBounds(10, 445, 149, 14);
-		contentPane.add(lblNewLabel_2);
+		JLabel lblTitre3 = new JLabel("Ajouter une personne");
+		lblTitre3.setBounds(10, 445, 149, 14);
+		contentPane.add(lblTitre3);
 		
-		JLabel lblNewLabel_3 = new JLabel("Ajouter une absence");
-		lblNewLabel_3.setBounds(551, 516, 142, 14);
-		contentPane.add(lblNewLabel_3);
+		JLabel lblTitre4 = new JLabel("Ajouter une absence");
+		lblTitre4.setBounds(533, 519, 142, 14);
+		contentPane.add(lblTitre4);
 	}
 }
