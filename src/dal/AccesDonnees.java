@@ -55,6 +55,10 @@ public class AccesDonnees {
         return lePersonnel;
 	}
 	
+	/**
+	 * demande à ConnexionBDD la liste d'enregistrements de la table responsable
+	 * @return liste des responsables sous forme de ArrayList
+	 */
 	public static ArrayList<Responsable> getResponsables() {
 		ArrayList<Responsable> lesResponsables = new ArrayList<>();
 		String req = "select login, pwd from responsable;";

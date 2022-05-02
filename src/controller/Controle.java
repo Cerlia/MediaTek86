@@ -41,6 +41,9 @@ public class Controle {
 		**/
 	}
 	
+	/**
+	 * ouverture de la fenêtre de gestion demandée par Login
+	 */
 	public void evtLanceGestion() {
 		this.frmGestion = new Gestion(this) ;
 		this.frmGestion.setVisible(true);
@@ -49,7 +52,7 @@ public class Controle {
 		
 	/**
 	 * transfère au DAL la demande getResponsables() de la vue
-	 * @return
+	 * @return réponse sous forme de ArrayList
 	 */
 	public ArrayList<Responsable> getResponsables() {
 		return AccesDonnees.getResponsables();
@@ -57,7 +60,7 @@ public class Controle {
 	
 	/**
 	 * transfère au DAL la demande getPersonnel() de la vue
-	 * @return
+	 * @return réponse sous forme de ArrayList
 	 */
 	public ArrayList<Personnel> getPersonnel() {
 		return AccesDonnees.getPersonnel();

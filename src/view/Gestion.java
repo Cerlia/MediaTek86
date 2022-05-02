@@ -62,6 +62,7 @@ public class Gestion extends JFrame {
 	
 	/**
 	 * création de la fenêtre
+	 * @param controle instance de Controle passée par lui-même
 	 */
 	public Gestion(Controle controle) {
 		this.controle = controle;

@@ -35,13 +35,22 @@ public class Login extends JFrame {
 	 * instance de Controle permettant les échanges avec le contrôleur
 	 */
 	private Controle controle;
+	/**
+	 * champ d'entrée du login
+	 */
 	JTextField txtLogin;
+	/**
+	 * champ d'entrée du mot de passe
+	 */
 	JPasswordField txtPassword;
+	/**
+	 * label pouvant contenir un message d'erreur
+	 */
 	JLabel lblErreur;
 	
 	/**
 	 * création de la fenêtre
-	 * @param controle instance de Controle
+	 * @param controle instance de Controle passée par lui-même
 	 */
 	public Login(Controle controle) {
 		this.controle = controle;		
@@ -99,6 +108,9 @@ public class Login extends JFrame {
 		contentPane.add(lblErreur);
 	}
 	
+	/**
+	 * événement sur clic de btnConnect : ouverture ou non de la fenêtre de gestion
+	 */
 	public void btnConnect_clic() {
 		if (!txtLogin.getText().equals("") && !(String.valueOf(txtPassword.getPassword())).equals("")) {
 			boolean loginok = false;  
@@ -122,6 +134,11 @@ public class Login extends JFrame {
 		}
 	}	
 	
+	/**
+	 * génération d'un mot de passe avec algorithme SHA-2
+	 * @param motdepasse mot de passe à hasher
+	 * @return hash SHA-2 du mot de passe
+	 */
 	public String getSHA256SecurePassword(String motdepasse) {
         String generatedPassword = null;
         try {
@@ -139,6 +156,9 @@ public class Login extends JFrame {
         return generatedPassword;
     }
 	
+	/**
+	 * effacement du message indiquant une erreur de login/mot de passe
+	 */
 	public void videMessageErreur() {
 		lblErreur.setText("");
 	}
