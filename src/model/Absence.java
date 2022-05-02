@@ -1,6 +1,6 @@
 package model;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * classe permettant la manipulation d'enregistrements de la table absence

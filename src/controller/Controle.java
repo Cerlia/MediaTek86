@@ -1,10 +1,16 @@
 package controller;
 
-import java.util.HashMap;
-
 import view.Login;
 import view.Gestion;
 import connexion.ConnexionBDD;
+import dal.AccesDonnees;
+import model.Absence;
+import model.Motif;
+import model.Personnel;
+import model.Responsable;
+import model.Service;
+
+import java.util.ArrayList;
 
 /**
  * classe gérant les interactions entre la vue et le modèle
@@ -13,15 +19,47 @@ import connexion.ConnexionBDD;
  */
 public class Controle {
 	/**
-	 * instance de Login
+	 * instance de fenêtre Login
 	 */
 	private Login frmLogin;
+	/**
+	 * instance de fenêtre Gestion
+	 */
+	private Gestion frmGestion;
 
 	/**
 	 * constructeur permettant d'ouvrir la fenêtre de login
 	 */
 	public Controle() {
-		this.frmLogin = new Login(this) ;
-		this.frmLogin.setVisible(true);
+		// lignes temporaires pour test
+		this.frmGestion = new Gestion(this) ;
+		this.frmGestion.setVisible(true);
+		
+		/** 
+		* this.frmLogin = new Login(this) ;
+		* this.frmLogin.setVisible(true);
+		**/
+	}
+	
+	public void evtLanceGestion() {
+		this.frmGestion = new Gestion(this) ;
+		this.frmGestion.setVisible(true);
+		this.frmLogin.setVisible(false);
+	}
+		
+	/**
+	 * transfère au DAL la demande getResponsables() de la vue
+	 * @return
+	 */
+	public ArrayList<Responsable> getResponsables() {
+		return AccesDonnees.getResponsables();
+	}
+	
+	/**
+	 * transfère au DAL la demande getPersonnel() de la vue
+	 * @return
+	 */
+	public ArrayList<Personnel> getPersonnel() {
+		return AccesDonnees.getPersonnel();
 	}
 }
