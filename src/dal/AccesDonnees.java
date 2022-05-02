@@ -34,7 +34,7 @@ public class AccesDonnees {
 	 */
 	public static ArrayList<Personnel> getPersonnel() {
 		ArrayList<Personnel> lePersonnel = new ArrayList<>();
-		String req = "select p.idpersonnel as idpersonnel, p.nom as nom, p.prenom as prenom, p.tel as tel, p.mail as mail, s.idservice as idservice, s.libelle as service ";
+		String req = "select p.idpersonnel as idpersonnel, p.nom as nom, p.prenom as prenom, p.tel as tel, p.mail as mail, s.idservice as idservice, s.nom as service ";
         req += "from personnel p join service s on (p.idservice = s.idservice) ";
         req += "order by nom, prenom;";
         ConnexionBDD conn = ConnexionBDD.getInstance(connectionURL, login, pwd);
@@ -42,13 +42,13 @@ public class AccesDonnees {
         while (Boolean.TRUE.equals(conn.lireCurseur()))
         {
             Personnel personnel = new Personnel(
-            		(int)conn.champ("iddeveloppeur"),
+            		(int)conn.champ("idpersonnel"),
             		(String)conn.champ("nom"),
             		(String)conn.champ("prenom"),
             		(String)conn.champ("tel"),
             		(String)conn.champ("mail"),
-            		(int)conn.champ("idprofil"),
-            		(String)conn.champ("profil"));
+            		(int)conn.champ("idservice"),
+            		(String)conn.champ("service"));
             lePersonnel.add(personnel);
         }
         conn.fermeCurseur();
