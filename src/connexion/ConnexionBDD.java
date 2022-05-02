@@ -6,7 +6,7 @@ import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Map;
+import java.util.ArrayList;
 
 /**
  * classe permettant l'accès à la base de données
@@ -21,46 +21,40 @@ public class ConnexionBDD {
 	/**
 	 * connexion à la base de données
 	 */
-	private Connection connexion;
-	/**
-	 * commande à envoyer à la base de données
-	 */
-	private Statement commande;
-	/**
-	 * commande à envoyer à la base de données (requête préparée)
-	 */
-	private PreparedStatement commandeprep;
+	private Connection connexion = null;	
 	/**
 	 * curseur utilisé dans les requêtes de type SELECT
 	 */
-	private ResultSet curseur;
+	private ResultSet curseur = null;
 	
 	/**
 	 * constructeur
 	 * @param connectionString chaîne de connexion
+	 * @param login login
+	 * @param pwd mot de passe
 	 */
-	private ConnexionBDD(String connectionString) {
-		try {
-			// chargement du driver
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			// ouverture de la connexion
-			connexion = DriverManager.getConnection(connectionString, "mtmanager", "Aga,Ajtp86");			
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Connexion impossible");
-		    System.exit(0);
-		}
+	private ConnexionBDD(String connectionString, String login, String pwd) {
+		if(connexion == null) {
+			try {
+				connexion = DriverManager.getConnection(connectionString, login, pwd);			
+			}
+			catch(SQLException e) {
+				System.out.println("erreur d'accès à la BDD");
+				System.exit(0);
+			}			
+		}		
 	}
 	
 	/**
 	 * renvoie l'instance unique de la classe après l'avoir créée si besoin
 	 * @param connectionString chaîne de connexion
+	 * @param login login
+	 * @param pwd mot de passe
 	 * @return instance unique de la classe
 	 */
-	public static ConnexionBDD getInstance(String connectionString) {
-		if (ConnexionBDD.instance == null) {
-			instance = new ConnexionBDD(connectionString);
+	public static ConnexionBDD getInstance(String connectionString, String login, String pwd) {
+		if (instance == null) {
+			instance = new ConnexionBDD(connectionString, login, pwd);
 		}		
 		return instance;
 	}
@@ -70,47 +64,61 @@ public class ConnexionBDD {
 	 * @param requete requête MySQL
 	 * @param parametres paramètres pour la préparation de la requête
 	 */
-	public void requeteUpdate(String requete, Map<Integer, String> parametres) {
-		try {
-			commandeprep = connexion.prepareStatement(requete);						
-			for (Map.Entry<Integer, String> e : parametres.entrySet()) {
-		        commandeprep.setString(e.getKey(), e.getValue());
+	public void requeteUpdate(String requete, ArrayList<Object> parametres) {
+		if (connexion != null) {
+			try {
+				PreparedStatement commandeprep = connexion.prepareStatement(requete);
+				if (parametres != null) {
+					int i = 1;
+					for (Object param : parametres) {
+				        commandeprep.setObject(i, param);
+				        i++;
+					}
+				}
+				commandeprep.executeUpdate();
 			}
-			commandeprep.executeUpdate();
-		}
-		catch (Exception e) {
-			System.out.println("erreur");
-		}
+			catch(SQLException e) {
+				System.out.println(e.getMessage());
+			}			
+		}		
 	}
 	
 	/**
 	 * exécution d'une requête de type SELECT
 	 * @param requete requête MySQL
+	 * @param parametres paramètres pour la préparation de la requête
 	 */
-	public void requeteSelect(String requete) {
-		try {
-			commande = connexion.createStatement();
-			curseur = commande.executeQuery(requete);			
+	public void requeteSelect(String requete, ArrayList<Object> parametres) {
+		if(connexion != null) {
+			try {
+				PreparedStatement commandeprep = connexion.prepareStatement(requete);
+				if(parametres != null) {
+					int i = 1;
+					for (Object param : parametres) {
+						commandeprep.setObject(i, param);
+						i++;
+					}
+				}
+				curseur = commandeprep.executeQuery();
+			}
+			catch(SQLException e) {
+				System.out.println(e.getMessage());
+			}
 		}
-		catch (Exception e) {
-			System.out.println("erreur");
-		}
-	}
+	}	
 	
 	/**
 	 * lecture de la ligne suivante du curseur
 	 * @return false si la fin du curseur est atteinte
 	 */
 	public Boolean lireCurseur() {
-		if (curseur == null) {
-			return false;
+		if (curseur != null) {
+			try {
+				return curseur.next();
+			}
+			catch (SQLException e) {}
 		}
-		try {
-			return curseur.next();
-		}
-		catch (Exception e) {
-			return false;
-		}
+		return false;
 	}
 	
 	/**
@@ -119,16 +127,13 @@ public class ConnexionBDD {
 	 * @return valeur du champ
 	 */
 	public Object champ(String champ) {
-		if (curseur == null)
-        {
+		if (curseur == null) {
             return null;
         }
-        try
-        {
+        try {
             return curseur.getObject(champ);
         }
-        catch (Exception e)
-        {
+        catch (SQLException e) {
             return null;
         }
 		
@@ -144,7 +149,7 @@ public class ConnexionBDD {
 				curseur.close();
 			}
             catch (SQLException e) {
-				e.printStackTrace();
+				curseur = null;
 			}
         }
 	}
