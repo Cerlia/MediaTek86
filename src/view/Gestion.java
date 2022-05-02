@@ -62,12 +62,13 @@ public class Gestion extends JFrame {
 	
 	/**
 	 * création de la fenêtre
+	 * @param controle instance de Controle passée par lui-même
 	 */
 	public Gestion(Controle controle) {
 		this.controle = controle;
 		setTitle("MediaTek86 - Gestion du personnel");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 950, 725);
+		setBounds(100, 100, 1100, 725);
 		JPanel contentPane = new JPanel();
 		contentPane.setLocation(-495, -538);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -76,7 +77,7 @@ public class Gestion extends JFrame {
 		
 		pnlPersonnel = new JPanel();
 		pnlPersonnel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		pnlPersonnel.setBounds(10, 29, 489, 390);
+		pnlPersonnel.setBounds(10, 29, 627, 390);
 		contentPane.add(pnlPersonnel);
 		pnlPersonnel.setLayout(null);
 		
@@ -93,16 +94,16 @@ public class Gestion extends JFrame {
 		pnlPersonnel.add(btnSuppPers);
 		
 		JButton btnGerAbs = new JButton("G\u00E9rer les absences");
-		btnGerAbs.setBounds(328, 357, 149, 23);
+		btnGerAbs.setBounds(466, 356, 149, 23);
 		pnlPersonnel.add(btnGerAbs);
 		
 		tblPersonnel = new JTable();
-		tblPersonnel.setBounds(12, 12, 465, 335);
+		tblPersonnel.setBounds(10, 12, 605, 335);
 		pnlPersonnel.add(tblPersonnel);
 		
 		pnlAbsence = new JPanel();
 		pnlAbsence.setBorder(new LineBorder(new Color(0, 0, 0)));
-		pnlAbsence.setBounds(533, 29, 389, 461);
+		pnlAbsence.setBounds(683, 29, 389, 461);
 		contentPane.add(pnlAbsence);
 		pnlAbsence.setLayout(null);
 		
@@ -120,7 +121,7 @@ public class Gestion extends JFrame {
 		
 		pnlModifPersonnel = new JPanel();
 		pnlModifPersonnel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		pnlModifPersonnel.setBounds(10, 465, 489, 206);
+		pnlModifPersonnel.setBounds(10, 465, 627, 206);
 		contentPane.add(pnlModifPersonnel);
 		pnlModifPersonnel.setLayout(null);
 		
@@ -145,40 +146,40 @@ public class Gestion extends JFrame {
 		pnlModifPersonnel.add(lblLabel4);
 		
 		JTextField txtNom = new JTextField();
-		txtNom.setBounds(113, 29, 226, 20);
+		txtNom.setBounds(113, 29, 268, 20);
 		pnlModifPersonnel.add(txtNom);
 		txtNom.setColumns(10);
 		
 		JTextField txtPrenom = new JTextField();
 		txtPrenom.setColumns(10);
-		txtPrenom.setBounds(113, 59, 226, 20);
+		txtPrenom.setBounds(113, 59, 268, 20);
 		pnlModifPersonnel.add(txtPrenom);
 		
 		JTextField txtTel = new JTextField();
 		txtTel.setColumns(10);
-		txtTel.setBounds(113, 132, 226, 20);
+		txtTel.setBounds(113, 132, 268, 20);
 		pnlModifPersonnel.add(txtTel);
 		
 		JComboBox cboService = new JComboBox();
-		cboService.setBounds(113, 91, 226, 22);
+		cboService.setBounds(113, 91, 268, 22);
 		pnlModifPersonnel.add(cboService);
 		
 		JTextField txtMail = new JTextField();
 		txtMail.setColumns(10);
-		txtMail.setBounds(113, 167, 226, 20);
+		txtMail.setBounds(113, 167, 268, 20);
 		pnlModifPersonnel.add(txtMail);
 		
 		JButton btnSavePers = new JButton("Enregistrer");
-		btnSavePers.setBounds(376, 131, 101, 23);
+		btnSavePers.setBounds(500, 131, 101, 23);
 		pnlModifPersonnel.add(btnSavePers);
 		
 		JButton btnCancelPers = new JButton("Annuler");
-		btnCancelPers.setBounds(376, 166, 101, 23);
+		btnCancelPers.setBounds(500, 166, 101, 23);
 		pnlModifPersonnel.add(btnCancelPers);
 		
 		pnlModifAbsence = new JPanel();
 		pnlModifAbsence.setBorder(new LineBorder(new Color(0, 0, 0)));
-		pnlModifAbsence.setBounds(533, 538, 389, 133);
+		pnlModifAbsence.setBounds(683, 538, 389, 133);
 		contentPane.add(pnlModifAbsence);
 		pnlModifAbsence.setLayout(null);
 		
@@ -219,7 +220,7 @@ public class Gestion extends JFrame {
 		contentPane.add(lblTitre1);
 		
 		JLabel lblTitre2 = new JLabel("Absences");
-		lblTitre2.setBounds(533, 11, 371, 14);
+		lblTitre2.setBounds(683, 11, 371, 14);
 		contentPane.add(lblTitre2);
 		
 		JLabel lblTitre3 = new JLabel("Ajouter une personne");
@@ -227,7 +228,7 @@ public class Gestion extends JFrame {
 		contentPane.add(lblTitre3);
 		
 		JLabel lblTitre4 = new JLabel("Ajouter une absence");
-		lblTitre4.setBounds(533, 519, 142, 14);
+		lblTitre4.setBounds(685, 516, 142, 14);
 		contentPane.add(lblTitre4);
 		
 		statutPanel(pnlModifPersonnel, false);
@@ -239,13 +240,18 @@ public class Gestion extends JFrame {
 		statutPanel(pnlModifAbsence, false);
 		
 		// chargement de la liste du personnel
-		// chargePersonnel();
+		chargePersonnel();
 		// chargement du combo des services
 		// chargeServices();
 		// chargement du combo des motifs d'absence
 		// chargeMotifs();
 	}
 	
+	/**
+	 * activation/désactivation des composants d'un JPanel
+	 * @param panel JPanel à activer/désactiver
+	 * @param actif true si le JPanel doit être rendu actif
+	 */
 	private void statutPanel(JPanel panel, Boolean actif) {
 	    Component[] composants = panel.getComponents();
 	    for (Component composant : composants) {
@@ -253,16 +259,19 @@ public class Gestion extends JFrame {
 	    }
 	}
 	
+	/**
+	 * chargement de la liste du personnel dans la JTable tblPersonnel
+	 */
 	private void chargePersonnel() {
-		List<Personnel> lePersonnel = controle.getPersonnel();
+		ArrayList<Personnel> lePersonnel = controle.getPersonnel();
 		// appel de méthode pour construire le "model" de remplissage de la table
-		
+		tblPersonnel.setModel(model(lePersonnel));
 	}
 	
 	/**
-	 * construit le modèle pour afficher les données dans une table
+	 * construction du modèle pour afficher les données dans une table
 	 * @param lePersonnel liste d'objets de type Personnel
-	 * @return 
+	 * @return modèle de données
 	 */
 	private DefaultTableModel model(ArrayList<Personnel> lePersonnel) {
 		String[] colonnes = { "Nom", "Prénom", "Téléphone", "Mail", "Service"};
