@@ -52,7 +52,7 @@ public class Controle {
 		
 	/**
 	 * transfère au DAL la demande getResponsables() de la vue
-	 * @return réponse sous forme de ArrayList
+	 * @return liste des responsables sous forme de ArrayList
 	 */
 	public ArrayList<Responsable> getResponsables() {
 		return AccesDonnees.getResponsables();
@@ -60,9 +60,41 @@ public class Controle {
 	
 	/**
 	 * transfère au DAL la demande getPersonnel() de la vue
-	 * @return réponse sous forme de ArrayList
+	 * @return liste du personnel sous forme de ArrayList
 	 */
 	public ArrayList<Personnel> getPersonnel() {
 		return AccesDonnees.getPersonnel();
+	}
+	
+	/**
+	 * transfère au DAL la demande getServices() de la vue
+	 * @return liste des services sous forme de ArrayList
+	 */
+	public ArrayList<Service> getServices() {
+		return AccesDonnees.getServices();
+	}
+	
+	/**
+	 * transfère au DAL la demande majPersonnel() de la vue
+	 * @param personnel données du personnel à mettre à jour
+	 */
+	public void majPersonnel(Personnel personnel) {
+		AccesDonnees.majPersonnel(personnel);
+	}
+	
+	/**
+	 * transfère au DAL la demande creePersonnel() de la vue
+	 * @param personnel données du personnel à ajouter
+	 */
+	public void creePersonnel(Personnel personnel) {
+		AccesDonnees.creePersonnel(personnel);
+	}
+	
+	/**
+	 * transfère au DAL la demande supprPersonnel() de la vue
+	 * @param personnel données du personnel à supprimer
+	 */
+	public void supprPersonnel(Personnel personnel) {
+		AccesDonnees.supprPersonnel(personnel);
 	}
 }

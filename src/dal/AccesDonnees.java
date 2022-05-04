@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 /**
  * classe qui fait le lien entre la vue et la classe de connexion
- * @author Claire
  *
  */
 public class AccesDonnees {
@@ -72,5 +71,90 @@ public class AccesDonnees {
 		}
 		conn.fermeCurseur();
 		return lesResponsables;
+	}
+	
+	/**
+	 * demande à ConnexionBDD la liste d'enregistrements de la table service
+	 * @return liste des services sous forme de ArrayList
+	 */
+	public static ArrayList<Service> getServices() {
+		ArrayList<Service> lesServices = new ArrayList<>();
+		String req = "select idservice, nom from service;";
+		ConnexionBDD conn = ConnexionBDD.getInstance(connectionURL, login, pwd);
+		conn.requeteSelect(req, null);
+		while (Boolean.TRUE.equals(conn.lireCurseur())) {
+			Service service = new Service(
+					(int)conn.champ("idservice"),
+					(String)conn.champ("nom"));
+			lesServices.add(service);
+		}
+		conn.fermeCurseur();
+		return lesServices;
+	}
+	
+	/**
+	 * demande à ConnexionBDD la liste d'enregistrements de la table motif
+	 * @return liste des motifs sous forme de ArrayList
+	 */
+	public static ArrayList<Motif> getMotifs() {
+		ArrayList<Motif> lesMotifs = new ArrayList<>();
+		String req = "select idmotif, libelle from motif;";
+		ConnexionBDD conn = ConnexionBDD.getInstance(connectionURL, login, pwd);
+		conn.requeteSelect(req, null);
+		while (Boolean.TRUE.equals(conn.lireCurseur())) {
+			Motif motif = new Motif(
+					(int)conn.champ("idmotif"),
+					(String)conn.champ("libelle"));
+			lesMotifs.add(motif);
+		}
+		conn.fermeCurseur();
+		return lesMotifs;
+	}
+	
+	/**
+	 * demande à ConnexionBDD de mettre à jour un enregistrement de la table personnel
+	 * @param personnel objet Personnel contenant les données à enregistrer
+	 */
+	public static void majPersonnel(Personnel personnel) {
+		String req = "update personnel set nom = ?, prenom = ?, tel = ?, mail = ?, idservice = ?" +
+				" where idpersonnel = ?";
+		ArrayList<Object> lesParametres = new ArrayList<>();
+		lesParametres.add(personnel.getNom());
+		lesParametres.add(personnel.getPrenom());
+		lesParametres.add(personnel.getTel());
+		lesParametres.add(personnel.getMail());
+		lesParametres.add(personnel.getIdservice());
+		lesParametres.add(personnel.getIdpersonnel());
+        ConnexionBDD conn = ConnexionBDD.getInstance(connectionURL, login, pwd);
+        conn.requeteUpdate(req, lesParametres);
+	}
+	
+	/**
+	 * demande à ConnexionBDD d'ajouter un enregistrement dans la table personnel
+	 * @param personnel objet Personnel contenant les données à enregistrer
+	 */
+	public static void creePersonnel(Personnel personnel) {
+		String req = "insert into personnel (nom, prenom, tel, mail, idservice)" +
+				" values (?, ?, ?, ?, ?)";
+		ArrayList<Object> lesParametres = new ArrayList<>();
+		lesParametres.add(personnel.getNom());
+		lesParametres.add(personnel.getPrenom());
+		lesParametres.add(personnel.getTel());
+		lesParametres.add(personnel.getMail());
+		lesParametres.add(personnel.getIdservice());
+        ConnexionBDD conn = ConnexionBDD.getInstance(connectionURL, login, pwd);
+        conn.requeteUpdate(req, lesParametres);
+	}
+	
+	/**
+	 * demande à ConnexionBDD de supprimer un enregistrement dans la table personnel
+	 * @param personnel objet Personnel contenant les données à supprimer
+	 */
+	public static void supprPersonnel(Personnel personnel) {
+		String req = "delete from personnel where idpersonnel = ?;";
+		ArrayList<Object> lesParametres = new ArrayList<>();
+		lesParametres.add(personnel.getIdpersonnel());
+		ConnexionBDD conn = ConnexionBDD.getInstance(connectionURL, login, pwd);
+        conn.requeteUpdate(req, lesParametres);
 	}
 }
