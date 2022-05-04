@@ -109,7 +109,7 @@ public class Login extends JFrame {
 	}
 	
 	/**
-	 * événement sur clic de btnConnect : ouverture ou non de la fenêtre de gestion
+	 * événement clic sur btnConnect : ouverture ou non de la fenêtre de gestion
 	 */
 	public void btnConnect_clic() {
 		if (!txtLogin.getText().equals("") && !(String.valueOf(txtPassword.getPassword())).equals("")) {
