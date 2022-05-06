@@ -7,7 +7,10 @@ import model.Personnel;
 import model.Responsable;
 import model.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
+
 
 /**
  * classe qui fait le lien entre la vue et la classe de connexion
@@ -110,6 +113,32 @@ public class AccesDonnees {
 		conn.fermeCurseur();
 		return lesMotifs;
 	}
+	
+	/**
+	 * demande à ConnexionBDD des enregistrements de la table absence
+	 * @param idpersonnel identifiant de la personne dont on veut les absences
+	 * @return liste des absences sous forme de ArrayList
+	 */
+	public static ArrayList<Absence> getAbsences(int idpersonnel) {
+		ArrayList<Absence> lesAbsences = new ArrayList<>();
+		String req = "select a.idpersonnel, a.datedebut, a.datefin, a.idmotif, m.libelle from absence a join motif m using (idmotif)";
+		req += " where idpersonnel = ?;";
+		ArrayList<Object> lesParametres = new ArrayList<>();
+		lesParametres.add(idpersonnel);		
+		ConnexionBDD conn = ConnexionBDD.getInstance(connectionURL, login, pwd);		
+		conn.requeteSelect(req, lesParametres);
+		while (Boolean.TRUE.equals(conn.lireCurseur())) {
+			Absence absence = new Absence(
+					(int)conn.champ("idpersonnel"),
+					((Date)conn.champ("datedebut")).toLocalDate(),
+					((Date)conn.champ("datefin")).toLocalDate(),
+					(int)conn.champ("idmotif"),
+					(String)conn.champ("libelle"));
+			lesAbsences.add(absence);
+		}
+		conn.fermeCurseur();
+		return lesAbsences;
+	}	
 	
 	/**
 	 * demande à ConnexionBDD de mettre à jour un enregistrement de la table personnel

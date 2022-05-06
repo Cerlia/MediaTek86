@@ -75,6 +75,23 @@ public class Controle {
 	}
 	
 	/**
+	 * transfère au DAL la demande getAbsences() de la vue
+	 * @param idpersonnel identifiant de la personne dont on veut les absences
+	 * @return liste des absences d'une personne sous forme de ArrayList
+	 */
+	public ArrayList<Absence> getAbsences(int idpersonnel) {
+		return AccesDonnees.getAbsences(idpersonnel);
+	}	
+	
+	/**
+	 * transfère au DAL la demande getMotifs() de la vue
+	 * @return liste des motifs sous forme de ArrayList
+	 */
+	public ArrayList<Motif> getMotifs() {
+		return AccesDonnees.getMotifs();
+	}
+	
+	/**
 	 * transfère au DAL la demande majPersonnel() de la vue
 	 * @param personnel données du personnel à mettre à jour
 	 */
