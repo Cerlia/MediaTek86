@@ -4,7 +4,6 @@ import controller.Controle;
 import model.Absence;
 import model.Motif;
 import model.Personnel;
-import model.Responsable;
 import model.Service;
 
 import javax.swing.JFrame;
@@ -13,13 +12,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -28,7 +23,6 @@ import javax.swing.JTextField;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
-import java.awt.ComponentOrientation;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -61,6 +55,13 @@ public class Gestion extends JFrame {
 	/**
 	 * table contenant la liste du personnel
 	 */
+	/**
+	 * bouton qui active/désactive le panneau des absences
+	 */
+	private JButton btnGerAbs;	
+	/**
+	 * table contenant la liste du personnel
+	 */
 	private JTable tblPersonnel;
 	/**
 	 * table contenant la liste des absences
@@ -70,6 +71,10 @@ public class Gestion extends JFrame {
 	 * combobox des services
 	 */
 	private JComboBox<String> cboService;
+	/**
+	 * combobox des motifs
+	 */
+	private JComboBox<String> cboMotif;
 	/**
 	 * champ nom de pnlModifPersonnel
 	 */
@@ -86,6 +91,10 @@ public class Gestion extends JFrame {
 	 * champ e-mail de pnlModifPersonnel
 	 */
 	private JTextField txtMail;
+	/**
+	 * label titre de pnlAbsences
+	 */
+	private JLabel lblAbsences;
 	/**
 	 * label titre de pnlModifPersonnel
 	 */	
@@ -156,8 +165,14 @@ public class Gestion extends JFrame {
 		btnSuppPers.setBounds(212, 356, 95, 23);
 		pnlPersonnel.add(btnSuppPers);
 		
-		JButton btnGerAbs = new JButton("G\u00E9rer les absences");
-		btnGerAbs.setBounds(466, 356, 149, 23);
+		btnGerAbs = new JButton("G\u00E9rer les absences");
+		btnGerAbs.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				btnGerAbs_clic();
+			}
+		});
+		btnGerAbs.setBounds(430, 356, 185, 23);
 		pnlPersonnel.add(btnGerAbs);
 		
 		JScrollPane scpPersonnel = new JScrollPane();
@@ -269,7 +284,7 @@ public class Gestion extends JFrame {
 		lblLabel5.setBounds(10, 28, 56, 14);
 		pnlModifAbsence.add(lblLabel5);
 		
-		JComboBox cboMotif = new JComboBox();
+		cboMotif = new JComboBox();
 		cboMotif.setBounds(108, 24, 142, 22);
 		pnlModifAbsence.add(cboMotif);
 		
@@ -301,9 +316,9 @@ public class Gestion extends JFrame {
 		lblTitre1.setBounds(10, 11, 627, 14);
 		contentPane.add(lblTitre1);
 		
-		JLabel lblTitre2 = new JLabel("Absences");
-		lblTitre2.setBounds(683, 11, 389, 14);
-		contentPane.add(lblTitre2);
+		lblAbsences = new JLabel("Absences");
+		lblAbsences.setBounds(683, 11, 389, 14);
+		contentPane.add(lblAbsences);
 		
 		lblAjModifPers = new JLabel("Ajouter une personne");
 		lblAjModifPers.setBounds(10, 445, 627, 14);
@@ -313,12 +328,18 @@ public class Gestion extends JFrame {
 		lblAjModifAbs.setBounds(685, 516, 387, 14);
 		contentPane.add(lblAjModifAbs);
 		
-		statutPanel(pnlModifPersonnel, false);
-		statutPanel(pnlAbsence, false);
+		JScrollPane scpAbsences = new JScrollPane();
+		scpAbsences.setBounds(12, 12, 365, 402);
+		pnlAbsence.add(scpAbsences);
 		
 		tblAbsences = new JTable();
-		tblAbsences.setBounds(12, 12, 365, 404);
-		pnlAbsence.add(tblAbsences);
+		scpAbsences.setViewportView(tblAbsences);		
+		tblAbsences.setFillsViewportHeight(true);
+		tblAbsences.setDefaultEditor(Object.class, null);
+		tblAbsences.getTableHeader().setReorderingAllowed(false);
+				
+		statutPanel(pnlModifPersonnel, false);
+		statutPanel(pnlAbsence, false);
 		statutPanel(pnlModifAbsence, false);
 		
 		// chargement de la liste du personnel
@@ -326,7 +347,7 @@ public class Gestion extends JFrame {
 		// chargement du combo des services
 		chargeServices();
 		// chargement du combo des motifs d'absence
-		// chargeMotifs();
+		chargeMotifs();
 	}
 	
 	/**
@@ -354,6 +375,21 @@ public class Gestion extends JFrame {
 		tblPersonnel.removeColumn(tblPersonnel.getColumnModel().getColumn(0));
 		tblPersonnel.removeColumn(tblPersonnel.getColumnModel().getColumn(4));
 	}
+		
+	/**
+	 * chargement de la liste des absences dans la JTable tblAbsences
+	 * @param idpersonnel idpersonnel de la personne dont on affiche les absences
+	 */
+	private void chargeAbsences(int idpersonnel) {
+		ArrayList<Absence> lesAbsences = controle.getAbsences(idpersonnel);
+		tblAbsences.setModel(modelTblAbs(lesAbsences));		
+		tblAbsences.getColumnModel().getColumn(0).setPreferredWidth(30);
+		tblAbsences.getColumnModel().getColumn(1).setPreferredWidth(30);
+		tblAbsences.getColumnModel().getColumn(2).setPreferredWidth(30);
+		tblAbsences.getColumnModel().getColumn(3).setPreferredWidth(60);
+		tblAbsences.removeColumn(tblAbsences.getColumnModel().getColumn(0));
+		tblAbsences.removeColumn(tblAbsences.getColumnModel().getColumn(2));
+	}
 	
 	/**
 	 * chargement du JComboBox cboService du panel pnlModifPersonnel
@@ -361,6 +397,14 @@ public class Gestion extends JFrame {
 	private void chargeServices() {
 		ArrayList<Service> lesServices = controle.getServices();
 		cboService.setModel(modelCboServ(lesServices));
+	}
+	
+	/**
+	 * chargement du JComboBox cboMotif du panel pnlModifAbsence
+	 */
+	private void chargeMotifs() {
+		ArrayList<Motif> lesMotifs = controle.getMotifs();
+		cboMotif.setModel(modelCboMotif(lesMotifs));
 	}
 	
 	/**
@@ -384,6 +428,24 @@ public class Gestion extends JFrame {
 	}
 	
 	/**
+	 * construction du modèle pour afficher les données de la table tblAbsences
+	 * @param lesAbsences liste d'objets de type Absence
+	 * @return modèle de données
+	 */
+	private DefaultTableModel modelTblAbs(ArrayList<Absence> lesAbsences) {
+		String[] colonnes = new String[] { "idpers", "Date de début", "Date de fin", "idmotif", "Motif"};
+		Object[][] donnees = new Object[lesAbsences.size()][5];
+		for (int i = 0; i < lesAbsences.size(); i++) {
+			donnees[i][0] = lesAbsences.get(i).getIdpersonnel();
+			donnees[i][1] = lesAbsences.get(i).getDatedebut();
+			donnees[i][2] = lesAbsences.get(i).getDatefin();
+			donnees[i][3] = lesAbsences.get(i).getIdmotif();
+			donnees[i][4] = lesAbsences.get(i).getMotif();
+		}
+		return new DefaultTableModel(donnees, colonnes);
+	}
+	
+	/**
 	 * construction du modèle pour afficher les données du combobox cboServices
 	 * @param lesServices liste d'objets de type Service
 	 * @return modèle de données
@@ -397,11 +459,26 @@ public class Gestion extends JFrame {
 	}
 	
 	/**
+	 * construction du modèle pour afficher les données du combobox cboMotifs
+	 * @param lesMotifs liste d'objets de type Motif
+	 * @return modèle de données
+	 */
+	private DefaultComboBoxModel<String> modelCboMotif(ArrayList<Motif> lesMotifs) {
+		String[] donnees = new String[lesMotifs.size()];
+		for (int i = 0; i < lesMotifs.size(); i++) {
+			donnees[i] = lesMotifs.get(i).getLibelle();			
+		}
+		return new DefaultComboBoxModel<>(donnees);
+	}
+	
+	/**
 	 * événement clic sur btnAjoutPers : activation du panneau pnlModifPersonnel
 	 */
 	private void btnAjoutPers_clic() {
 		ajoutPersEnCours = true;
-		statutPanel(pnlModifPersonnel, true);		
+		statutPanel(pnlModifPersonnel, true);	
+		statutPanel(pnlPersonnel, false);
+		tblPersonnel.setEnabled(false);
 	}
 	
 	/**
@@ -423,7 +500,15 @@ public class Gestion extends JFrame {
 				txtMail.setText((String)tblPersonnel.getModel().getValueAt(index, 4));
 				cboService.setSelectedIndex((int)tblPersonnel.getModel().getValueAt(index, 5)-1);	
 			} catch (Exception e) {}					
-		}		
+		}
+		else {
+			JOptionPane.showConfirmDialog(null,
+					"Une ligne doit être sélectionnée",
+					"Information",
+					JOptionPane.DEFAULT_OPTION,
+					JOptionPane.INFORMATION_MESSAGE,
+					null);
+		}
 	}
 	
 	/**
@@ -501,6 +586,8 @@ public class Gestion extends JFrame {
         statutPanel(pnlModifPersonnel, false);
         lblAjModifPers.setText("Ajouter une personne");
         tblPersonnel.setEnabled(true);
+    	ajoutPersEnCours = false;
+    	modifPersEnCours = false;
         txtNom.setText("");
         txtPrenom.setText("");
         cboService.setSelectedIndex(0);
@@ -530,5 +617,46 @@ public class Gestion extends JFrame {
 			}
 			tblPersonnel.setEnabled(true);
 		}
+	}
+	
+	/**
+	 * événement clic sur btnGerAbs
+	 */
+	private void btnGerAbs_clic() {
+		// si le panneau des absences est inactif
+		if (btnGerAbs.getText().equals("G\u00E9rer les absences")) {
+			if (tblPersonnel.getSelectedRow() != -1) {
+				finModifPers();
+				tblPersonnel.setEnabled(false);
+				statutPanel(pnlPersonnel, false);
+				statutPanel(pnlAbsence, true);
+				btnGerAbs.setEnabled(true);
+				btnGerAbs.setText("Fermer les absences");
+				int idpersonnel = (int)tblPersonnel.getModel().getValueAt(tblPersonnel.getSelectedRow(), 0);
+				lblAbsences.setText("Absences - " + (String)tblPersonnel.getModel().getValueAt(tblPersonnel.getSelectedRow(), 2) +
+						" " + (String)tblPersonnel.getModel().getValueAt(tblPersonnel.getSelectedRow(), 1));
+				chargeAbsences(idpersonnel);
+			}
+			else {
+				JOptionPane.showConfirmDialog(null,
+					"Une ligne doit être sélectionnée",
+					"Information",
+					JOptionPane.DEFAULT_OPTION,
+					JOptionPane.INFORMATION_MESSAGE,
+					null);
+			}
+		// si le panneau des absences est actif
+		}
+		else if (btnGerAbs.getText().equals("Fermer les absences")) {
+			DefaultTableModel dm = (DefaultTableModel)tblAbsences.getModel();
+			dm.getDataVector().removeAllElements();
+			dm.setColumnCount(0);
+			dm.fireTableDataChanged();		
+			statutPanel(pnlAbsence, false);
+			statutPanel(pnlPersonnel, true);
+			tblPersonnel.setEnabled(true);
+			btnGerAbs.setText("Gérer les absences");
+			lblAbsences.setText("Absences");
+		}		
 	}
 }
