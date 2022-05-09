@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 /**
  * classe permettant l'accès à la base de données
  * @author Claire
@@ -39,7 +41,7 @@ public class ConnexionBDD {
 				connexion = DriverManager.getConnection(connectionString, login, pwd);			
 			}
 			catch(SQLException e) {
-				System.out.println("erreur d'accès à la BDD");
+				System.out.println("Erreur d'accès à la BDD");
 				System.exit(0);
 			}			
 		}		
@@ -78,7 +80,17 @@ public class ConnexionBDD {
 				commandeprep.executeUpdate();
 			}
 			catch(SQLException e) {
-				System.out.println(e.getMessage());
+				if (e.getErrorCode() == 1062) {
+					JOptionPane.showConfirmDialog(null,
+							"Enregistrement impossible, car une autre absence ayant la même date de début existe déjà pour cette personne",
+							"Erreur",
+							JOptionPane.DEFAULT_OPTION,
+							JOptionPane.ERROR_MESSAGE,
+							null);	
+				}
+				else {
+					System.out.println(e.getMessage());
+				}
 			}			
 		}		
 	}

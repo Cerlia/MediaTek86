@@ -11,6 +11,7 @@ import model.Responsable;
 import model.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * classe gérant les interactions entre la vue et le modèle
@@ -113,5 +114,30 @@ public class Controle {
 	 */
 	public void supprPersonnel(Personnel personnel) {
 		AccesDonnees.supprPersonnel(personnel);
+	}
+	
+	/**
+	 * transfère au DAL la demande majAbsence() de la vue
+	 * @param absence données de l'absence à mettre à jour
+	 * @param dateDebOriginale date de début d'absence avant modification potentielle
+	 */
+	public void majAbsence(Absence absence, Date dateDebOriginale) {
+		AccesDonnees.majAbsence(absence, dateDebOriginale);
+	}
+	
+	/**
+	 * transfère au DAL la demande creeAbsence() de la vue
+	 * @param absence données de l'absence à mettre à jour
+	 */
+	public void creeAbsence(Absence absence) {
+		AccesDonnees.creeAbsence(absence);
+	}
+	
+	/**
+	 * transfère au DAL la demande supprAbsence() de la vue
+	 * @param absence données de l'absence à mettre à jour
+	 */
+	public void supprAbsence(Absence absence) {
+		AccesDonnees.supprAbsence(absence);
 	}
 }

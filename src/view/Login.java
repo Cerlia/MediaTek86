@@ -1,29 +1,22 @@
 package view;
 
 import controller.Controle;
-import model.Absence;
-import model.Motif;
-import model.Personnel;
 import model.Responsable;
-import model.Service;
 
+import java.awt.Button;
+import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.JButton;
 import javax.swing.JPasswordField;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.awt.event.ActionEvent;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.awt.Color;
+
 
 /**
  * classe permettant l'affichage de la fenêtre de connexion
@@ -70,7 +63,7 @@ public class Login extends JFrame {
 		lblLabel1.setBounds(10, 47, 88, 14);
 		contentPane.add(lblLabel1);
 		
-		JButton btnConnect = new JButton("Connexion");
+		Button btnConnect = new Button("Connexion");
 		btnConnect.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
