@@ -2,7 +2,7 @@ package model;
 
 /**
  * classe permettant la manipulation d'enregistrements de la table personnel
- * @author Claire
+ * @author Claire Stalter
  *
  */
 public class Personnel {

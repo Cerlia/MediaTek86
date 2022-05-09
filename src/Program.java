@@ -2,7 +2,7 @@ import controller.Controle;
 
 /**
  * classe permettant le lancement du programme
- * @author Claire
+ * @author Claire Stalter
  *
  */
 public class Program {

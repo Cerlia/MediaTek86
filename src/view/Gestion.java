@@ -13,7 +13,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -33,7 +33,12 @@ import com.toedter.calendar.JDateChooser;
  * @author Claire Stalter
  *
  */
+@SuppressWarnings("serial")
 public class Gestion extends JFrame {
+	/**
+	 * constante de message "Une ligne doit être sélectionnée"
+	 */
+	private static final String INFOSELECTION = "Une ligne doit être sélectionnée";
 	/**
 	 * instance de Controle permettant les échanges avec le contrôleur
 	 */
@@ -65,7 +70,7 @@ public class Gestion extends JFrame {
 	/**
 	 * table contenant la liste des absences
 	 */
-	private JTable tblAbsences;
+	private JTable tblAbsence;
 	/**
 	 * combobox des services
 	 */
@@ -137,17 +142,15 @@ public class Gestion extends JFrame {
 		this.controle = controle;
 		setTitle("MediaTek86 - Gestion du personnel");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1100, 725);
+		setBounds(200, 100, 1100, 725);
 		JPanel contentPane = new JPanel();
 		contentPane.setLocation(-495, -538);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		/*  --------------------
-		 * 
-		 *	    PERSONNEL  
-		 * 
+		/*  -------------------- 
+		 *	     PERSONNEL  		  
 		 * --------------------- */
 		
 		JLabel lblTitre1 = new JLabel("Personnel");
@@ -285,10 +288,8 @@ public class Gestion extends JFrame {
 		btnCancelPers.setBounds(500, 166, 101, 23);
 		pnlModifPersonnel.add(btnCancelPers);
 		
-		/*  --------------------
-		 * 
-		 *	    ABSENCES  
-		 * 
+		/*  -------------------- 
+		 *	      ABSENCES  		  
 		 * --------------------- */
 		
 		lblAbsences = new JLabel("Absences");
@@ -389,23 +390,27 @@ public class Gestion extends JFrame {
 		scpAbsences.setBounds(12, 12, 365, 402);
 		pnlAbsence.add(scpAbsences);
 		
-		tblAbsences = new JTable();
-		scpAbsences.setViewportView(tblAbsences);		
-		tblAbsences.setFillsViewportHeight(true);
-		tblAbsences.setDefaultEditor(Object.class, null);
-		tblAbsences.getTableHeader().setReorderingAllowed(false);
+		tblAbsence = new JTable();
+		scpAbsences.setViewportView(tblAbsence);		
+		tblAbsence.setFillsViewportHeight(true);
+		tblAbsence.setDefaultEditor(Object.class, null);
+		tblAbsence.getTableHeader().setReorderingAllowed(false);
 				
 		statutPanel(pnlModifPersonnel, false);
 		statutPanel(pnlAbsence, false);
 		statutPanel(pnlModifAbsence, false);
 		
-		// chargement de la liste du personnel
 		chargePersonnel();
-		// chargement du combo des services
 		chargeServices();
-		// chargement du combo des motifs d'absence
 		chargeMotifs();
 	}
+	
+	
+	/* =================================
+	 * 
+	 *	PROCEDURES NON EVENEMENTIELLES  
+	 * 
+	 * ================================= */
 	
 	/**
 	 * activation/désactivation des composants d'un JPanel
@@ -423,7 +428,7 @@ public class Gestion extends JFrame {
 	 * chargement de la liste du personnel dans la JTable tblPersonnel
 	 */
 	private void chargePersonnel() {
-		ArrayList<Personnel> lePersonnel = controle.getPersonnel();
+		List<Personnel> lePersonnel = controle.getPersonnel();
 		tblPersonnel.setModel(modelTblPers(lePersonnel));
 		tblPersonnel.getColumnModel().getColumn(0).setPreferredWidth(30);
 		tblPersonnel.getColumnModel().getColumn(1).setPreferredWidth(30);
@@ -438,21 +443,21 @@ public class Gestion extends JFrame {
 	 * @param idpersonnel idpersonnel de la personne dont on affiche les absences
 	 */
 	private void chargeAbsences(int idpersonnel) {
-		ArrayList<Absence> lesAbsences = controle.getAbsences(idpersonnel);
-		tblAbsences.setModel(modelTblAbs(lesAbsences));		
-		tblAbsences.getColumnModel().getColumn(0).setPreferredWidth(30);
-		tblAbsences.getColumnModel().getColumn(1).setPreferredWidth(30);
-		tblAbsences.getColumnModel().getColumn(2).setPreferredWidth(30);
-		tblAbsences.getColumnModel().getColumn(3).setPreferredWidth(60);
-		tblAbsences.removeColumn(tblAbsences.getColumnModel().getColumn(0));
-		tblAbsences.removeColumn(tblAbsences.getColumnModel().getColumn(2));		
+		List<Absence> lesAbsences = controle.getAbsences(idpersonnel);
+		tblAbsence.setModel(modelTblAbs(lesAbsences));		
+		tblAbsence.getColumnModel().getColumn(0).setPreferredWidth(30);
+		tblAbsence.getColumnModel().getColumn(1).setPreferredWidth(30);
+		tblAbsence.getColumnModel().getColumn(2).setPreferredWidth(30);
+		tblAbsence.getColumnModel().getColumn(3).setPreferredWidth(60);
+		tblAbsence.removeColumn(tblAbsence.getColumnModel().getColumn(0));
+		tblAbsence.removeColumn(tblAbsence.getColumnModel().getColumn(2));		
 	}
 	
 	/**
 	 * chargement du JComboBox cboService du panel pnlModifPersonnel
 	 */
 	private void chargeServices() {
-		ArrayList<Service> lesServices = controle.getServices();
+		List<Service> lesServices = controle.getServices();
 		cboService.setModel(modelCboServ(lesServices));
 	}
 	
@@ -460,7 +465,7 @@ public class Gestion extends JFrame {
 	 * chargement du JComboBox cboMotif du panel pnlModifAbsence
 	 */
 	private void chargeMotifs() {
-		ArrayList<Motif> lesMotifs = controle.getMotifs();
+		List<Motif> lesMotifs = controle.getMotifs();
 		cboMotif.setModel(modelCboMotif(lesMotifs));
 	}
 	
@@ -469,7 +474,7 @@ public class Gestion extends JFrame {
 	 * @param lePersonnel liste d'objets de type Personnel
 	 * @return modèle de données
 	 */
-	private DefaultTableModel modelTblPers(ArrayList<Personnel> lePersonnel) {
+	private DefaultTableModel modelTblPers(List<Personnel> lePersonnel) {
 		String[] colonnes = new String[] { "idpers", "Nom", "Prénom", "Téléphone", "Mail", "idserv", "Service"};
 		Object[][] donnees = new Object[lePersonnel.size()][7];
 		for (int i = 0; i < lePersonnel.size(); i++) {
@@ -489,7 +494,7 @@ public class Gestion extends JFrame {
 	 * @param lesAbsences liste d'objets de type Absence
 	 * @return modèle de données
 	 */
-	private DefaultTableModel modelTblAbs(ArrayList<Absence> lesAbsences) {
+	private DefaultTableModel modelTblAbs(List<Absence> lesAbsences) {
 		String[] colonnes = new String[] { "idpers", "Date de début", "Date de fin", "idmotif", "Motif"};
 		Object[][] donnees = new Object[lesAbsences.size()][5];
 		for (int i = 0; i < lesAbsences.size(); i++) {
@@ -507,7 +512,7 @@ public class Gestion extends JFrame {
 	 * @param lesServices liste d'objets de type Service
 	 * @return modèle de données
 	 */
-	private DefaultComboBoxModel<String> modelCboServ(ArrayList<Service> lesServices) {
+	private DefaultComboBoxModel<String> modelCboServ(List<Service> lesServices) {
 		String[] donnees = new String[lesServices.size()];
 		for (int i = 0; i < lesServices.size(); i++) {
 			donnees[i] = lesServices.get(i).getNom();			
@@ -520,14 +525,107 @@ public class Gestion extends JFrame {
 	 * @param lesMotifs liste d'objets de type Motif
 	 * @return modèle de données
 	 */
-	private DefaultComboBoxModel<String> modelCboMotif(ArrayList<Motif> lesMotifs) {
+	private DefaultComboBoxModel<String> modelCboMotif(List<Motif> lesMotifs) {
 		String[] donnees = new String[lesMotifs.size()];
 		for (int i = 0; i < lesMotifs.size(); i++) {
 			donnees[i] = lesMotifs.get(i).getLibelle();			
 		}
 		return new DefaultComboBoxModel<>(donnees);
+	}	
+	
+	/**
+	 * affichage d'une boîte de dialogue demandant confirmation d'ajout/modification/suppression de personnel
+	 * @param question question posée à l'utilisateur
+	 * @param personnel données du personnel concerné par la question
+	 * @return choix de l'utilisateur
+	 */
+	private int confirmMsgBoxPers(String question, Personnel personnel) {
+		Object[] options = {"Confirmer", "Annuler"};
+		return JOptionPane.showOptionDialog(null,
+				"Nom : " + personnel.getNom() + "\nPrénom : " + personnel.getPrenom() + "\nService : " + personnel.getService() + 
+				"\nTéléphone : " + personnel.getTel() + "\nE-Mail : " + personnel.getMail() + "\n\n" + question,
+                "Demande de confirmation",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]);
 	}
 	
+	/**
+	 * affichage d'une boîte de dialogue demandant confirmation d'ajout/modification/suppression d'absence
+	 * @param question question posée à l'utilisateur
+	 * @param absence données de l'absence concernée par la question
+	 * @return choix de l'utilisateur
+	 */
+	private int confirmMsgBoxAbs(String question, Absence absence) {
+		Object[] options = {"Confirmer", "Annuler"};
+		SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+	    String datedebut = formater.format(absence.getDatedebut());
+	    String datefin = formater.format(absence.getDatefin());
+		return JOptionPane.showOptionDialog(null,
+				"Début : " + datedebut + "\nFin : " + datefin + "\nMotif : " + absence.getMotif() + "\n\n" + question,
+                "Demande de confirmation",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]);
+	}	
+		
+	/**
+	 * fin d'ajout/modification de personnel
+	 */
+	private void finModifPers() {
+		statutPanel(pnlPersonnel, true);
+        statutPanel(pnlModifPersonnel, false);
+        lblAjModifPers.setText("Ajouter une personne");
+        tblPersonnel.setEnabled(true);
+    	ajoutPersEnCours = false;
+    	modifPersEnCours = false;
+        txtNom.setText("");
+        txtPrenom.setText("");
+        cboService.setSelectedIndex(0);
+        txtTel.setText("");
+        txtMail.setText("");
+	}
+	
+	/**
+	 * fin d'ajout/modification d'absence
+	 */
+	private void finModifAbs() {
+		statutPanel(pnlAbsence, true);
+        statutPanel(pnlModifAbsence, false);
+        btnGerAbs.setEnabled(true);
+        lblAjModifAbs.setText("Ajouter une absence");
+        tblAbsence.setEnabled(true);
+    	ajoutAbsEnCours = false;
+    	modifAbsEnCours = false;
+        cboMotif.setSelectedIndex(0);
+        dtcDateDeb.setDate(null);
+        dtcDateFin.setDate(null);
+	}		
+		
+	/**
+	 * affichage d'un message informatif
+	 * @param message message à afficher
+	 */
+	private void afficheInfo(String message) {
+		JOptionPane.showConfirmDialog(null,
+				message,
+				"Information",
+				JOptionPane.DEFAULT_OPTION,
+				JOptionPane.INFORMATION_MESSAGE,
+				null);
+	}
+	
+		
+	/* =================================
+	 * 
+	 *	  PROCEDURES EVENEMENTIELLES  
+	 * 
+	 * ================================= */
+		
 	/**
 	 * événement clic sur btnAjoutPers : activation du panneau pnlModifPersonnel
 	 */
@@ -558,15 +656,13 @@ public class Gestion extends JFrame {
 				txtTel.setText((String)tblPersonnel.getModel().getValueAt(index, 3));
 				txtMail.setText((String)tblPersonnel.getModel().getValueAt(index, 4));
 				cboService.setSelectedIndex((int)tblPersonnel.getModel().getValueAt(index, 5)-1);	
-			} catch (Exception e) {}					
+			}
+			catch (Exception e) {
+				e.getStackTrace();
+			}					
 		}
 		else {
-			JOptionPane.showConfirmDialog(null,
-					"Une ligne doit être sélectionnée",
-					"Information",
-					JOptionPane.DEFAULT_OPTION,
-					JOptionPane.INFORMATION_MESSAGE,
-					null);
+			afficheInfo(INFOSELECTION);
 		}
 	}
 	
@@ -596,62 +692,19 @@ public class Gestion extends JFrame {
 				choix = confirmMsgBoxPers("Mettre à jour l'entrée avec ces informations ?", personnel);
 			}			
 			if (choix == 0) {
-				if (modifPersEnCours) {
+				if (Boolean.TRUE.equals(modifPersEnCours)) {
 					controle.majPersonnel(personnel);
-                    modifPersEnCours = false;
 				}
-				else if (ajoutPersEnCours) {
+				else if (Boolean.TRUE.equals(ajoutPersEnCours)) {
 					controle.creePersonnel(personnel);
-					ajoutPersEnCours = false;
 				}
 				finModifPers();
 				chargePersonnel();
 			}			
 		}
 		else {
-			JOptionPane.showConfirmDialog(null,
-					"Tous les champs doivent être remplis",
-					"Information",
-					JOptionPane.DEFAULT_OPTION,
-					JOptionPane.INFORMATION_MESSAGE,
-					null);
+			afficheInfo("Tous les champs doivent être remplis");
 		}				
-	}
-	
-	/**
-	 * affichage d'une boîte de dialogue demandant confirmation sur ajout/modification/suppression de personnel
-	 * @param question question posée à l'utilisateur
-	 * @param personnel données du personnel concerné par la question
-	 * @return choix de l'utilisateur
-	 */
-	private int confirmMsgBoxPers(String question, Personnel personnel) {
-		Object[] options = {"Confirmer", "Annuler"};
-		return JOptionPane.showOptionDialog(null,
-				"Nom : " + personnel.getNom() + "\nPrénom : " + personnel.getPrenom() + "\nService : " + personnel.getService() + 
-				"\nTéléphone : " + personnel.getTel() + "\nE-Mail : " + personnel.getMail() + "\n\n" + question,
-                "Demande de confirmation",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[0]);
-	}
-	
-	/**
-	 * réactivation de pnlPersonnel et désactivation de pnlModifPersonnel
-	 */
-	private void finModifPers() {
-		statutPanel(pnlPersonnel, true);
-        statutPanel(pnlModifPersonnel, false);
-        lblAjModifPers.setText("Ajouter une personne");
-        tblPersonnel.setEnabled(true);
-    	ajoutPersEnCours = false;
-    	modifPersEnCours = false;
-        txtNom.setText("");
-        txtPrenom.setText("");
-        cboService.setSelectedIndex(0);
-        txtTel.setText("");
-        txtMail.setText("");
 	}
 	
 	/**
@@ -677,7 +730,7 @@ public class Gestion extends JFrame {
 			tblPersonnel.setEnabled(true);
 		}
 		else {
-			infoSelection();
+			afficheInfo(INFOSELECTION);
 		}
 	}
 	
@@ -700,12 +753,12 @@ public class Gestion extends JFrame {
 				chargeAbsences(idpersonnel);
 			}
 			else {
-				infoSelection();
+				afficheInfo(INFOSELECTION);
 			}
 		// si le panneau des absences est actif
 		}
 		else if (btnGerAbs.getLabel().equals("Fermer les absences")) {
-			DefaultTableModel dm = (DefaultTableModel)tblAbsences.getModel();
+			DefaultTableModel dm = (DefaultTableModel)tblAbsence.getModel();
 			dm.getDataVector().removeAllElements();
 			dm.setColumnCount(0);
 			dm.fireTableDataChanged();		
@@ -718,33 +771,21 @@ public class Gestion extends JFrame {
 	}
 	
 	/**
-	 * affichage d'un message avertissant qu'une ligne doit être sélectionnée
-	 */
-	private void infoSelection() {
-		JOptionPane.showConfirmDialog(null,
-				"Une ligne doit être sélectionnée",
-				"Information",
-				JOptionPane.DEFAULT_OPTION,
-				JOptionPane.INFORMATION_MESSAGE,
-				null);
-	}
-	
-	/**
 	 * événement clic sur btnAjoutAbs : activation du panneau pnlModifAbsence
 	 */
 	private void btnAjoutAbs_clic() {
 		ajoutAbsEnCours = true;
 		statutPanel(pnlModifAbsence, true);
 		statutPanel(pnlAbsence, false);
-		tblAbsences.setEnabled(false);
-		tblAbsences.clearSelection();
+		tblAbsence.setEnabled(false);
+		tblAbsence.clearSelection();
 	}	
 	
 	/**
 	 * événement clic sur btnModifAbs : activation du panneau pnlModifAbsence avec remplissage des champs
 	 */
 	private void btnModifAbs_clic() {
-		if (tblAbsences.getSelectedRow() != -1) {
+		if (tblAbsence.getSelectedRow() != -1) {
 			try {
 				ajoutAbsEnCours = false;
 				modifAbsEnCours = true;
@@ -752,134 +793,85 @@ public class Gestion extends JFrame {
 				statutPanel(pnlModifAbsence, true);
 				statutPanel(pnlAbsence, false);
 				btnGerAbs.setEnabled(false);
-				tblAbsences.setEnabled(false);
-				int index = tblAbsences.getSelectedRow();
+				tblAbsence.setEnabled(false);
+				int index = tblAbsence.getSelectedRow();
 				// copie des données dans les champs correspondants				
-				cboMotif.setSelectedIndex((int)tblAbsences.getModel().getValueAt(index, 3)-1);
-				dtcDateDeb.setDate((Date)tblAbsences.getModel().getValueAt(index, 1));
-				dtcDateFin.setDate((Date)tblAbsences.getModel().getValueAt(index, 2));					
-			} catch (Exception e) {}					
+				cboMotif.setSelectedIndex((int)tblAbsence.getModel().getValueAt(index, 3)-1);
+				dtcDateDeb.setDate((Date)tblAbsence.getModel().getValueAt(index, 1));
+				dtcDateFin.setDate((Date)tblAbsence.getModel().getValueAt(index, 2));					
+			}
+			catch (Exception e) {
+				e.getStackTrace();
+			}					
 		}
 		else {
-			infoSelection();
+			afficheInfo(INFOSELECTION);
 		}
-	}
-	
-	/**
-	 * réactivation de pnlPersonnel et désactivation de pnlModifPersonnel
-	 */
-	private void finModifAbs() {
-		statutPanel(pnlAbsence, true);
-        statutPanel(pnlModifAbsence, false);
-        btnGerAbs.setEnabled(true);
-        lblAjModifAbs.setText("Ajouter une absence");
-        tblAbsences.setEnabled(true);
-    	ajoutAbsEnCours = false;
-    	modifAbsEnCours = false;
-        cboMotif.setSelectedIndex(0);
-        dtcDateDeb.setDate(null);
-        dtcDateFin.setDate(null);
 	}
 	
 	/**
 	 * événement clic sur btnSaveAbs
 	 */
 	private void btnSaveAbs_clic() {
-		if (dtcDateDeb.getDate() != null && dtcDateFin.getDate() != null) {
-			// vérifie si la date de début est antérieure à la date de fin
-			if (dtcDateDeb.getDate().before(dtcDateFin.getDate())) {
-				int idpersonnel = (int)tblPersonnel.getModel().getValueAt(tblPersonnel.getSelectedRow(), 0);
-				Date datedebut = dtcDateDeb.getDate();
-				int idmotif = cboMotif.getSelectedIndex()+1;
-				String motif = cboMotif.getSelectedItem().toString();
-				Date datefin = dtcDateFin.getDate();				
-				Absence absence = new Absence(idpersonnel, datedebut, datefin, idmotif, motif);
-				// demande de confirmation			
-				int choix = 0;
-				if (Boolean.TRUE.equals(ajoutAbsEnCours)) {
-					choix = confirmMsgBoxAbs("Ajouter une entrée avec ces informations ?", absence);
+		if (dtcDateDeb.getDate() != null && dtcDateFin.getDate() != null && dtcDateDeb.getDate().before(dtcDateFin.getDate())) {
+			int idpersonnel = (int)tblPersonnel.getModel().getValueAt(tblPersonnel.getSelectedRow(), 0);
+			Date datedebut = dtcDateDeb.getDate();
+			int idmotif = cboMotif.getSelectedIndex()+1;
+			String motif = cboMotif.getSelectedItem().toString();
+			Date datefin = dtcDateFin.getDate();				
+			Absence absence = new Absence(idpersonnel, datedebut, datefin, idmotif, motif);
+			// demande de confirmation			
+			int choix = 0;
+			if (Boolean.TRUE.equals(ajoutAbsEnCours)) {
+				choix = confirmMsgBoxAbs("Ajouter une entrée avec ces informations ?", absence);
+			}
+			else if (Boolean.TRUE.equals(modifAbsEnCours)) {
+				choix = confirmMsgBoxAbs("Mettre à jour l'entrée avec ces informations ?", absence);
+			}			
+			if (choix == 0) {
+				if (Boolean.TRUE.equals(modifAbsEnCours)) {
+					Date dateDebOriginale = (Date)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 1);
+					controle.majAbsence(absence, dateDebOriginale);
 				}
-				else if (Boolean.TRUE.equals(modifAbsEnCours)) {
-					choix = confirmMsgBoxAbs("Mettre à jour l'entrée avec ces informations ?", absence);
-				}			
-				if (choix == 0) {
-					if (modifAbsEnCours) {
-						Date dateDebOriginale = (Date)tblAbsences.getModel().getValueAt(tblAbsences.getSelectedRow(), 1);
-						controle.majAbsence(absence, dateDebOriginale);
-						modifAbsEnCours = false;
-					}
-				else if (ajoutAbsEnCours) {
+				else if (Boolean.TRUE.equals(ajoutAbsEnCours)) {
 					controle.creeAbsence(absence);
-					ajoutAbsEnCours = false;
 				}
 				finModifAbs();
 				chargeAbsences(idpersonnel);
-				}				
-			}
-			// si la date de fin est antérieure à la date de début
-			else {
-				JOptionPane.showConfirmDialog(null,
-						"La date de fin ne peut pas être antérieure à la date de début",
-						"Information",
-						JOptionPane.DEFAULT_OPTION,
-						JOptionPane.INFORMATION_MESSAGE,
-						null);				
 			}
 		}
 		// si l'un des deux champs de date contient une donnée erronée ou nulle
-		else {
-			JOptionPane.showConfirmDialog(null,
-					"Tous les champs doivent être correctement remplis",
-					"Information",
-					JOptionPane.DEFAULT_OPTION,
-					JOptionPane.INFORMATION_MESSAGE,
-					null);
+		else if (dtcDateDeb.getDate() == null || dtcDateFin.getDate() == null) {
+			afficheInfo("Tous les champs doivent être correctement remplis");
 		}		
-	}
-	
-	/**
-	 * affichage d'une boîte de dialogue demandant confirmation sur ajout/modification/suppression d'absence
-	 * @param question question posée à l'utilisateur
-	 * @param absence données de l'absence concernée par la question
-	 * @return choix de l'utilisateur
-	 */
-	private int confirmMsgBoxAbs(String question, Absence absence) {
-		Object[] options = {"Confirmer", "Annuler"};
-		SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
-	    String datedebut = formater.format(absence.getDatedebut());
-	    String datefin = formater.format(absence.getDatefin());
-		return JOptionPane.showOptionDialog(null,
-				"Début : " + datedebut + "\nFin : " + datefin + "\nMotif : " + absence.getMotif() + "\n\n" + question,
-                "Demande de confirmation",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[0]);
+		// si la date de fin est antérieure ou égale à la date de début
+		else {
+			afficheInfo("La date de fin doit être postérieure à la date de début");						
+		}				
 	}
 	
 	/**
 	 * événement clic sur btnSuppAbs
 	 */
 	private void btnSuppAbs_clic() {
-		if (tblAbsences.getSelectedRow() != -1) {
-			tblAbsences.setEnabled(false);
+		if (tblAbsence.getSelectedRow() != -1) {
+			tblAbsence.setEnabled(false);
 			String question = "Supprimer cette absence ?";
 			int idpersonnel = (int)tblPersonnel.getModel().getValueAt(tblPersonnel.getSelectedRow(), 0);
-			Date datedebut = (Date)tblAbsences.getModel().getValueAt(tblAbsences.getSelectedRow(), 1);
-		    Date datefin = (Date)tblAbsences.getModel().getValueAt(tblAbsences.getSelectedRow(), 2);		
-			int idmotif = (int)tblAbsences.getModel().getValueAt(tblAbsences.getSelectedRow(), 3);
-			String motif = (String)tblAbsences.getModel().getValueAt(tblAbsences.getSelectedRow(), 4);			
+			Date datedebut = (Date)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 1);
+		    Date datefin = (Date)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 2);		
+			int idmotif = (int)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 3);
+			String motif = (String)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 4);			
 			Absence absence = new Absence(idpersonnel, datedebut, datefin, idmotif, motif);
 			int choix = confirmMsgBoxAbs(question, absence);
 			if (choix == 0) {
 				controle.supprAbsence(absence);
 				chargeAbsences(idpersonnel);				
 			}
-			tblAbsences.setEnabled(true);
+			tblAbsence.setEnabled(true);
 		}
 		else {
-			infoSelection();
+			afficheInfo(INFOSELECTION);
 		}
 	}
 }
