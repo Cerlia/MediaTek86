@@ -1,6 +1,6 @@
 package model;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * classe permettant la manipulation d'enregistrements de la table absence
@@ -15,11 +15,11 @@ public class Absence {
 	/**
 	 * stocke la valeur du champ datedebut de la table absence
 	 */
-	private LocalDate datedebut;
+	private Date datedebut;
 	/**
 	 * stocke la valeur du champ datefin de la table absence
 	 */
-	private LocalDate datefin;
+	private Date datefin;
 	/**
 	 * stocke la valeur du champ idmotif de la table absence
 	 */
@@ -41,7 +41,7 @@ public class Absence {
 	 * getter sur datedebut
 	 * @return datedebut
 	 */
-	public LocalDate getDatedebut() {
+	public Date getDatedebut() {
 		return datedebut;
 	}
 
@@ -49,7 +49,7 @@ public class Absence {
 	 * getter sur datefin
 	 * @return datefin
 	 */
-	public LocalDate getDatefin() {
+	public Date getDatefin() {
 		return datefin;
 	}
 
@@ -77,7 +77,7 @@ public class Absence {
 	 * @param idmotif champ idmotif de la table absence
 	 * @param motif champ libelle de la table motif
 	 */
-	public Absence(int idpersonnel, LocalDate datedebut, LocalDate datefin, int idmotif, String motif) {
+	public Absence(int idpersonnel, Date datedebut, Date datefin, int idmotif, String motif) {
 		this.idpersonnel = idpersonnel;
 		this.datedebut = datedebut;
 		this.datefin = datefin;

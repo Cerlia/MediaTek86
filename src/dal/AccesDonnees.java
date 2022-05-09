@@ -7,8 +7,7 @@ import model.Personnel;
 import model.Responsable;
 import model.Service;
 
-import java.sql.Date;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.ArrayList;
 
 
@@ -130,8 +129,8 @@ public class AccesDonnees {
 		while (Boolean.TRUE.equals(conn.lireCurseur())) {
 			Absence absence = new Absence(
 					(int)conn.champ("idpersonnel"),
-					((Date)conn.champ("datedebut")).toLocalDate(),
-					((Date)conn.champ("datefin")).toLocalDate(),
+					(Date)conn.champ("datedebut"),
+					(Date)conn.champ("datefin"),
 					(int)conn.champ("idmotif"),
 					(String)conn.champ("libelle"));
 			lesAbsences.add(absence);
@@ -183,6 +182,53 @@ public class AccesDonnees {
 		String req = "delete from personnel where idpersonnel = ?;";
 		ArrayList<Object> lesParametres = new ArrayList<>();
 		lesParametres.add(personnel.getIdpersonnel());
+		ConnexionBDD conn = ConnexionBDD.getInstance(connectionURL, login, pwd);
+        conn.requeteUpdate(req, lesParametres);
+	}
+	
+	/**
+	 * demande à ConnexionBDD de mettre à jour un enregistrement de la table absence
+	 * @param absence objet Absence contenant les données à enregistrer
+	 * @param dateDebOriginale date de début d'absence avant modification potentielle
+	 */
+	public static void majAbsence(Absence absence, Date dateDebOriginale) {
+		String req = "update absence set datedebut = ?, idmotif = ?, datefin = ?" +
+				" where idpersonnel = ? and datedebut = ?";
+		ArrayList<Object> lesParametres = new ArrayList<>();
+		lesParametres.add(absence.getDatedebut());
+		lesParametres.add(absence.getIdmotif());
+		lesParametres.add(absence.getDatefin());
+		lesParametres.add(absence.getIdpersonnel());
+		lesParametres.add(dateDebOriginale);
+        ConnexionBDD conn = ConnexionBDD.getInstance(connectionURL, login, pwd);
+        conn.requeteUpdate(req, lesParametres);
+	}
+	
+	/**
+	 * demande à ConnexionBDD d'ajouter un enregistrement dans la table absence
+	 * @param absence objet Absence contenant les données à enregistrer
+	 */
+	public static void creeAbsence(Absence absence) {
+		String req = "insert into absence (idpersonnel, datedebut, idmotif, datefin)" +
+				" values (?, ?, ?, ?)";
+		ArrayList<Object> lesParametres = new ArrayList<>();
+		lesParametres.add(absence.getIdpersonnel());
+		lesParametres.add(absence.getDatedebut());
+		lesParametres.add(absence.getIdmotif());
+		lesParametres.add(absence.getDatefin());
+        ConnexionBDD conn = ConnexionBDD.getInstance(connectionURL, login, pwd);
+        conn.requeteUpdate(req, lesParametres);
+	}
+	
+	/**
+	 * demande à ConnexionBDD de supprimer un enregistrement dans la table absence
+	 * @param absence objet Absence contenant les données à supprimer
+	 */
+	public static void supprAbsence(Absence absence) {
+		String req = "delete from absence where idpersonnel = ? and datedebut = ?;";
+		ArrayList<Object> lesParametres = new ArrayList<>();
+		lesParametres.add(absence.getIdpersonnel());
+		lesParametres.add(absence.getDatedebut());
 		ConnexionBDD conn = ConnexionBDD.getInstance(connectionURL, login, pwd);
         conn.requeteUpdate(req, lesParametres);
 	}
