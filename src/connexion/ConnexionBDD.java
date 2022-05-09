@@ -2,17 +2,15 @@ package connexion;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
  * classe permettant l'accès à la base de données
- * @author Claire
+ * @author Claire Stalter
  *
  */
 public class ConnexionBDD {
@@ -66,7 +64,7 @@ public class ConnexionBDD {
 	 * @param requete requête MySQL
 	 * @param parametres paramètres pour la préparation de la requête
 	 */
-	public void requeteUpdate(String requete, ArrayList<Object> parametres) {
+	public void requeteUpdate(String requete, List<Object> parametres) {
 		if (connexion != null) {
 			try {
 				PreparedStatement commandeprep = connexion.prepareStatement(requete);
@@ -100,7 +98,7 @@ public class ConnexionBDD {
 	 * @param requete requête MySQL
 	 * @param parametres paramètres pour la préparation de la requête
 	 */
-	public void requeteSelect(String requete, ArrayList<Object> parametres) {
+	public void requeteSelect(String requete, List<Object> parametres) {
 		if(connexion != null) {
 			try {
 				PreparedStatement commandeprep = connexion.prepareStatement(requete);
@@ -147,8 +145,7 @@ public class ConnexionBDD {
         }
         catch (SQLException e) {
             return null;
-        }
-		
+        }		
 	}
 	
 	/**

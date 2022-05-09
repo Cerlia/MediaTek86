@@ -4,7 +4,7 @@ import java.util.Date;
 
 /**
  * classe permettant la manipulation d'enregistrements de la table absence
- * @author Claire
+ * @author Claire Stalter
  *
  */
 public class Absence {

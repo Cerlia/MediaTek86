@@ -20,9 +20,10 @@ import java.util.List;
 
 /**
  * classe permettant l'affichage de la fenêtre de connexion
- * @author Claire
+ * @author Claire Stalter
  *
  */
+@SuppressWarnings("serial")
 public class Login extends JFrame {
 	/**
 	 * instance de Controle permettant les échanges avec le contrôleur
@@ -49,7 +50,7 @@ public class Login extends JFrame {
 		this.controle = controle;		
 		setTitle("MediaTek86 - Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 420, 135);
+		setBounds(200, 100, 420, 135);
 		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -116,7 +117,7 @@ public class Login extends JFrame {
 				}
 			}
 			catch (Exception e) {
-				System.out.println("Erreur");
+				e.printStackTrace();
 			}
 			if (loginok) {
 				controle.evtLanceGestion();
@@ -139,18 +140,18 @@ public class Login extends JFrame {
             byte[] bytes = md.digest(motdepasse.getBytes());
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < bytes.length; i++) {
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16)
-                        .substring(1));
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
             }
             generatedPassword = sb.toString();
-        } catch (NoSuchAlgorithmException e) {
+        }
+        catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         return generatedPassword;
     }
 	
 	/**
-	 * effacement du message indiquant une erreur de login/mot de passe
+	 * effacement du message indiquant une erreur de nom ou mot de passe
 	 */
 	public void videMessageErreur() {
 		lblErreur.setText("");

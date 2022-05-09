@@ -2,7 +2,7 @@ package model;
 
 /**
  * classe permettant la manipulation d'enregistrements de la table service
- * @author Claire
+ * @author Claire Stalter
  *
  */
 public class Service {
