@@ -31,15 +31,17 @@ public class Controle {
 	 * constructeur permettant d'ouvrir la fenêtre de login
 	 */
 	public Controle() {
-		this.frmLogin = new Login(this) ;
-		this.frmLogin.setVisible(true);
+		this.frmGestion = new Gestion(this);
+		this.frmGestion.setVisible(true);
+		// this.frmLogin = new Login(this);
+		// this.frmLogin.setVisible(true);
 	}
 	
 	/**
 	 * ouverture de la fenêtre de gestion demandée par Login
 	 */
 	public void evtLanceGestion() {
-		this.frmGestion = new Gestion(this) ;
+		this.frmGestion = new Gestion(this);
 		this.frmGestion.setVisible(true);
 		this.frmLogin.setVisible(false);
 	}
