@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -29,6 +30,7 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import com.toedter.calendar.JDateChooser;
 
+
 /**
  * classe permettant l'affichage de la fenêtre principale
  * @author Claire Stalter
@@ -40,6 +42,10 @@ public class Gestion extends JFrame {
 	 * constante de message "Une ligne doit être sélectionnée"
 	 */
 	private static final String INFOSELECTION = "Une ligne doit être sélectionnée";
+	/**
+	 * constante du format de la date
+	 */
+	private static final String FORMATDATE = "dd/MM/yyyy";
 	/**
 	 * instance de Controle permettant les échanges avec le contrôleur
 	 */
@@ -381,10 +387,12 @@ public class Gestion extends JFrame {
 		dtcDateDeb = new JDateChooser();
 		dtcDateDeb.setBounds(108, 61, 142, 20);
 		pnlModifAbsence.add(dtcDateDeb);
+		dtcDateDeb.setDateFormatString(FORMATDATE);
 		
 		dtcDateFin = new JDateChooser();
 		dtcDateFin.setBounds(108, 97, 142, 20);
 		pnlModifAbsence.add(dtcDateFin);
+		dtcDateFin.setDateFormatString(FORMATDATE);
 				
 		JScrollPane scpAbsences = new JScrollPane();
 		scpAbsences.setBounds(12, 12, 365, 402);
@@ -446,7 +454,7 @@ public class Gestion extends JFrame {
 		List<Absence> lesAbsences = controle.getAbsences(idpersonnel);
 		tblAbsence.setModel(modelTblAbs(lesAbsences));		
 		tblAbsence.getColumnModel().getColumn(0).setPreferredWidth(30);
-		tblAbsence.getColumnModel().getColumn(1).setPreferredWidth(30);
+		tblAbsence.getColumnModel().getColumn(1).setPreferredWidth(30);		
 		tblAbsence.getColumnModel().getColumn(2).setPreferredWidth(30);
 		tblAbsence.getColumnModel().getColumn(3).setPreferredWidth(60);
 		tblAbsence.removeColumn(tblAbsence.getColumnModel().getColumn(0));
@@ -499,10 +507,14 @@ public class Gestion extends JFrame {
 		Object[][] donnees = new Object[lesAbsences.size()][5];
 		for (int i = 0; i < lesAbsences.size(); i++) {
 			donnees[i][0] = lesAbsences.get(i).getIdpersonnel();
-			donnees[i][1] = lesAbsences.get(i).getDatedebut();
+			donnees[i][1] = lesAbsences.get(i).getDatedebut();				
 			donnees[i][2] = lesAbsences.get(i).getDatefin();
 			donnees[i][3] = lesAbsences.get(i).getIdmotif();
 			donnees[i][4] = lesAbsences.get(i).getMotif();
+			// formatage des dates
+			SimpleDateFormat date = new SimpleDateFormat(FORMATDATE);
+			donnees[i][1] = date.format(donnees[i][1]);
+			donnees[i][2] = date.format(donnees[i][2]);
 		}
 		return new DefaultTableModel(donnees, colonnes);
 	}
@@ -566,7 +578,7 @@ public class Gestion extends JFrame {
 					"\nTéléphone : " + personnel.getTel() + "\nE-Mail : " + personnel.getMail() + "\n\n" + question;			
 		}
 		else if (objet instanceof Absence absence) {
-			SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat formater = new SimpleDateFormat(FORMATDATE);
 		    String datedebut = formater.format(absence.getDatedebut());
 		    String datefin = formater.format(absence.getDatefin());
 		    message = "Début : " + datedebut + "\nFin : " + datefin + "\nMotif : " + absence.getMotif() + "\n\n" + question;		    
@@ -811,10 +823,12 @@ public class Gestion extends JFrame {
 				btnGerAbs.setEnabled(false);
 				tblAbsence.setEnabled(false);
 				int index = tblAbsence.getSelectedRow();
-				// copie des données dans les champs correspondants				
-				cboMotif.setSelectedIndex((int)tblAbsence.getModel().getValueAt(index, 3)-1);
-				dtcDateDeb.setDate((Date)tblAbsence.getModel().getValueAt(index, 1));
-				dtcDateFin.setDate((Date)tblAbsence.getModel().getValueAt(index, 2));					
+				// copie et formatage des données dans les champs correspondants				
+				cboMotif.setSelectedIndex((int)tblAbsence.getModel().getValueAt(index, 3)-1);			
+				String datedebut = (String)tblAbsence.getModel().getValueAt(index, 1);
+				String datefin = (String)tblAbsence.getModel().getValueAt(index, 2);
+				dtcDateDeb.setDate(new SimpleDateFormat(FORMATDATE).parse(datedebut));
+				dtcDateFin.setDate(new SimpleDateFormat(FORMATDATE).parse(datefin));
 			}
 			catch (Exception e) {
 				e.getStackTrace();
@@ -842,8 +856,14 @@ public class Gestion extends JFrame {
 				int choix = confirmAjoutModifSuppr(absence);			
 				if (choix == 0) {
 					if (Boolean.TRUE.equals(modifAbsEnCours)) {
-						Date dateDebOriginale = (Date)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 1);
-						controle.majAbsence(absence, dateDebOriginale);
+						String dateDebOrigString = (String)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 1);
+						try {
+							Date dateDebOriginale = new SimpleDateFormat(FORMATDATE).parse(dateDebOrigString);
+							controle.majAbsence(absence, dateDebOriginale);
+						}
+						catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
 					else if (Boolean.TRUE.equals(ajoutAbsEnCours)) {
 						controle.creeAbsence(absence);
@@ -869,8 +889,17 @@ public class Gestion extends JFrame {
 		if (tblAbsence.getSelectedRow() != -1) {
 			tblAbsence.setEnabled(false);
 			int idpersonnel = (int)tblPersonnel.getModel().getValueAt(tblPersonnel.getSelectedRow(), 0);
-			Date datedebut = (Date)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 1);
-			Date datefin = (Date)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 2);		
+			String dateDebutString = (String)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 1);
+			String dateFinString = (String)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 2);
+			Date datedebut = null;
+			Date datefin = null;
+			try {
+				datedebut = new SimpleDateFormat(FORMATDATE).parse(dateDebutString);
+				datefin = new SimpleDateFormat(FORMATDATE).parse(dateFinString);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 			int idmotif = (int)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 3);
 			String motif = (String)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 4);			
 			Absence absence = new Absence(idpersonnel, datedebut, datefin, idmotif, motif);
