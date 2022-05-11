@@ -12,8 +12,10 @@ import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -28,6 +30,7 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import com.toedter.calendar.JDateChooser;
 
+
 /**
  * classe permettant l'affichage de la fenêtre principale
  * @author Claire Stalter
@@ -39,6 +42,10 @@ public class Gestion extends JFrame {
 	 * constante de message "Une ligne doit être sélectionnée"
 	 */
 	private static final String INFOSELECTION = "Une ligne doit être sélectionnée";
+	/**
+	 * constante du format de la date
+	 */
+	private static final String FORMATDATE = "dd/MM/yyyy";
 	/**
 	 * instance de Controle permettant les échanges avec le contrôleur
 	 */
@@ -133,7 +140,6 @@ public class Gestion extends JFrame {
 	private Boolean modifAbsEnCours = false;
 
 
-	
 	/**
 	 * création de la fenêtre
 	 * @param controle instance de Controle passée par lui-même
@@ -197,7 +203,7 @@ public class Gestion extends JFrame {
 		btnSuppPers.setBounds(212, 356, 95, 23);
 		pnlPersonnel.add(btnSuppPers);
 		
-		btnGerAbs = new Button("G\u00E9rer les absences");
+		btnGerAbs = new Button("Gérer les absences");
 		btnGerAbs.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -228,7 +234,7 @@ public class Gestion extends JFrame {
 		lblLabel0.setBounds(10, 32, 56, 14);
 		pnlModifPersonnel.add(lblLabel0);
 		
-		JLabel lblLabel1 = new JLabel("Pr\u00E9nom");
+		JLabel lblLabel1 = new JLabel("Prénom");
 		lblLabel1.setBounds(10, 62, 46, 14);
 		pnlModifPersonnel.add(lblLabel1);
 		
@@ -236,7 +242,7 @@ public class Gestion extends JFrame {
 		lblLabel2.setBounds(10, 95, 46, 14);
 		pnlModifPersonnel.add(lblLabel2);
 		
-		JLabel lblLabel3 = new JLabel("T\u00E9l\u00E9phone");
+		JLabel lblLabel3 = new JLabel("Téléphone");
 		lblLabel3.setBounds(10, 135, 85, 14);
 		pnlModifPersonnel.add(lblLabel3);
 		
@@ -350,7 +356,7 @@ public class Gestion extends JFrame {
 		cboMotif.setBounds(108, 24, 142, 22);
 		pnlModifAbsence.add(cboMotif);
 		
-		JLabel lblLabel6 = new JLabel("Date de d\u00E9but");
+		JLabel lblLabel6 = new JLabel("Date de début");
 		lblLabel6.setBounds(10, 67, 90, 14);
 		pnlModifAbsence.add(lblLabel6);
 		
@@ -381,10 +387,12 @@ public class Gestion extends JFrame {
 		dtcDateDeb = new JDateChooser();
 		dtcDateDeb.setBounds(108, 61, 142, 20);
 		pnlModifAbsence.add(dtcDateDeb);
+		dtcDateDeb.setDateFormatString(FORMATDATE);
 		
 		dtcDateFin = new JDateChooser();
 		dtcDateFin.setBounds(108, 97, 142, 20);
 		pnlModifAbsence.add(dtcDateFin);
+		dtcDateFin.setDateFormatString(FORMATDATE);
 				
 		JScrollPane scpAbsences = new JScrollPane();
 		scpAbsences.setBounds(12, 12, 365, 402);
@@ -446,7 +454,7 @@ public class Gestion extends JFrame {
 		List<Absence> lesAbsences = controle.getAbsences(idpersonnel);
 		tblAbsence.setModel(modelTblAbs(lesAbsences));		
 		tblAbsence.getColumnModel().getColumn(0).setPreferredWidth(30);
-		tblAbsence.getColumnModel().getColumn(1).setPreferredWidth(30);
+		tblAbsence.getColumnModel().getColumn(1).setPreferredWidth(30);		
 		tblAbsence.getColumnModel().getColumn(2).setPreferredWidth(30);
 		tblAbsence.getColumnModel().getColumn(3).setPreferredWidth(60);
 		tblAbsence.removeColumn(tblAbsence.getColumnModel().getColumn(0));
@@ -499,10 +507,14 @@ public class Gestion extends JFrame {
 		Object[][] donnees = new Object[lesAbsences.size()][5];
 		for (int i = 0; i < lesAbsences.size(); i++) {
 			donnees[i][0] = lesAbsences.get(i).getIdpersonnel();
-			donnees[i][1] = lesAbsences.get(i).getDatedebut();
+			donnees[i][1] = lesAbsences.get(i).getDatedebut();				
 			donnees[i][2] = lesAbsences.get(i).getDatefin();
 			donnees[i][3] = lesAbsences.get(i).getIdmotif();
 			donnees[i][4] = lesAbsences.get(i).getMotif();
+			// formatage des dates
+			SimpleDateFormat date = new SimpleDateFormat(FORMATDATE);
+			donnees[i][1] = date.format(donnees[i][1]);
+			donnees[i][2] = date.format(donnees[i][2]);
 		}
 		return new DefaultTableModel(donnees, colonnes);
 	}
@@ -534,44 +546,52 @@ public class Gestion extends JFrame {
 	}	
 	
 	/**
-	 * affichage d'une boîte de dialogue demandant confirmation d'ajout/modification/suppression de personnel
-	 * @param question question posée à l'utilisateur
-	 * @param personnel données du personnel concerné par la question
-	 * @return choix de l'utilisateur
+	 * commande l'affichage d'une fenêtre de confirmation d'ajout/modification/suppression de personnel/absence
+	 * @param objet objet Absence ou Personnel à ajouter/mettre à jour/supprimer
+	 * @return 0 si l'utilisateur a confirmé
 	 */
-	private int confirmMsgBoxPers(String question, Personnel personnel) {
-		Object[] options = {"Confirmer", "Annuler"};
-		return JOptionPane.showOptionDialog(null,
-				"Nom : " + personnel.getNom() + "\nPrénom : " + personnel.getPrenom() + "\nService : " + personnel.getService() + 
-				"\nTéléphone : " + personnel.getTel() + "\nE-Mail : " + personnel.getMail() + "\n\n" + question,
-                "Demande de confirmation",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[0]);
+	private int confirmAjoutModifSuppr(Object objet) {
+		int choix = 0;
+		if (Boolean.TRUE.equals(ajoutPersEnCours) || Boolean.TRUE.equals(ajoutAbsEnCours)) {
+			choix = confirmMsgBox("Ajouter une entrée avec ces informations ?", objet);
+		}
+		else if (Boolean.TRUE.equals(modifPersEnCours) || Boolean.TRUE.equals(modifAbsEnCours)) {
+			choix = confirmMsgBox("Mettre à jour l'entrée avec ces informations ?", objet);
+		}
+		else {
+			choix = confirmMsgBox("Supprimer cette entrée de la base de données ?", objet);
+		}
+		return choix;
 	}
-	
+
 	/**
-	 * affichage d'une boîte de dialogue demandant confirmation d'ajout/modification/suppression d'absence
-	 * @param question question posée à l'utilisateur
-	 * @param absence données de l'absence concernée par la question
+	 * affichage d'une fenêtre de confirmation
+	 * @param question demande de confirmation adressée à l'utilisateur
+	 * @param objet objet Absence ou Personnel concerné par la question
 	 * @return choix de l'utilisateur
 	 */
-	private int confirmMsgBoxAbs(String question, Absence absence) {
+	private int confirmMsgBox(String question, Object objet) {
 		Object[] options = {"Confirmer", "Annuler"};
-		SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
-	    String datedebut = formater.format(absence.getDatedebut());
-	    String datefin = formater.format(absence.getDatefin());
+		String message = "";
+		if (objet instanceof Personnel personnel) {
+			message = "Nom : " + personnel.getNom() + "\nPrénom : " + personnel.getPrenom() + "\nService : " + personnel.getService() + 
+					"\nTéléphone : " + personnel.getTel() + "\nE-Mail : " + personnel.getMail() + "\n\n" + question;			
+		}
+		else if (objet instanceof Absence absence) {
+			SimpleDateFormat formater = new SimpleDateFormat(FORMATDATE);
+		    String datedebut = formater.format(absence.getDatedebut());
+		    String datefin = formater.format(absence.getDatefin());
+		    message = "Début : " + datedebut + "\nFin : " + datefin + "\nMotif : " + absence.getMotif() + "\n\n" + question;		    
+		}				
 		return JOptionPane.showOptionDialog(null,
-				"Début : " + datedebut + "\nFin : " + datefin + "\nMotif : " + absence.getMotif() + "\n\n" + question,
+				message,
                 "Demande de confirmation",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 options,
                 options[0]);
-	}	
+	}		
 		
 	/**
 	 * fin d'ajout/modification de personnel
@@ -618,6 +638,21 @@ public class Gestion extends JFrame {
 				JOptionPane.INFORMATION_MESSAGE,
 				null);
 	}
+	
+	/**
+	 * mise à zéro de la partie "temps" d'un objet Date
+	 * @param date date dont on veut supprimer les données h, m, s, ms
+	 * @return date sans les valeurs h, m, s, ms
+	 */
+	private Date supprTemps(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
 	
 		
 	/* =================================
@@ -667,7 +702,7 @@ public class Gestion extends JFrame {
 	}
 	
 	/**
-	 * événement clic sur btnSavePers
+	 * événement clic sur btnSavePers : sauvegarde de personnel après confirmation de l'utilisateur
 	 */
 	private void btnSavePers_clic() {
 		if (!txtNom.getText().equals("") && !txtPrenom.getText().equals("")
@@ -682,15 +717,9 @@ public class Gestion extends JFrame {
 			String mail = txtMail.getText();
 			int idservice = cboService.getSelectedIndex()+1;
 			String service = cboService.getSelectedItem().toString();
-			Personnel personnel = new Personnel(idpersonnel, nom, prenom, tel, mail, idservice, service);
-			// demande de confirmation			
-			int choix = 0;
-			if (Boolean.TRUE.equals(ajoutPersEnCours)) {
-				choix = confirmMsgBoxPers("Ajouter une entrée avec ces informations ?", personnel);
-			}
-			else if (Boolean.TRUE.equals(modifPersEnCours)) {
-				choix = confirmMsgBoxPers("Mettre à jour l'entrée avec ces informations ?", personnel);
-			}			
+			Personnel personnel = new Personnel(idpersonnel, nom, prenom, tel, mail, idservice, service);			
+			// demande de confirmation
+			int choix = confirmAjoutModifSuppr(personnel);			
 			if (choix == 0) {
 				if (Boolean.TRUE.equals(modifPersEnCours)) {
 					controle.majPersonnel(personnel);
@@ -708,12 +737,11 @@ public class Gestion extends JFrame {
 	}
 	
 	/**
-	 * événement clic sur btnSuppPers
+	 * événement clic sur btnSuppPers : suppression de personnel après confirmation de l'utilisateur
 	 */
 	private void btnSuppPers_clic() {
 		if (tblPersonnel.getSelectedRow() != -1) {
 			tblPersonnel.setEnabled(false);
-			String question = "Supprimer les données de cette personne ?";
 			int idpersonnel = (int)tblPersonnel.getModel().getValueAt(tblPersonnel.getSelectedRow(), 0);
 			String nom = (String)tblPersonnel.getModel().getValueAt(tblPersonnel.getSelectedRow(), 1);
 			String prenom = (String)tblPersonnel.getModel().getValueAt(tblPersonnel.getSelectedRow(), 2);
@@ -722,7 +750,7 @@ public class Gestion extends JFrame {
 			int idservice = (int)tblPersonnel.getModel().getValueAt(tblPersonnel.getSelectedRow(), 5);
 			String service = (String)tblPersonnel.getModel().getValueAt(tblPersonnel.getSelectedRow(), 6);
 			Personnel personnel = new Personnel(idpersonnel, nom, prenom, tel, mail, idservice, service);
-			int choix = confirmMsgBoxPers(question, personnel);
+			int choix = confirmAjoutModifSuppr(personnel);
 			if (choix == 0) {
 				controle.supprPersonnel(personnel);
 				chargePersonnel();				
@@ -735,7 +763,7 @@ public class Gestion extends JFrame {
 	}
 	
 	/**
-	 * événement clic sur btnGerAbs
+	 * événement clic sur btnGerAbs : activation/désactivation du panneau des absences
 	 */
 	private void btnGerAbs_clic() {
 		// si le panneau des absences est inactif
@@ -795,10 +823,12 @@ public class Gestion extends JFrame {
 				btnGerAbs.setEnabled(false);
 				tblAbsence.setEnabled(false);
 				int index = tblAbsence.getSelectedRow();
-				// copie des données dans les champs correspondants				
-				cboMotif.setSelectedIndex((int)tblAbsence.getModel().getValueAt(index, 3)-1);
-				dtcDateDeb.setDate((Date)tblAbsence.getModel().getValueAt(index, 1));
-				dtcDateFin.setDate((Date)tblAbsence.getModel().getValueAt(index, 2));					
+				// copie et formatage des données dans les champs correspondants				
+				cboMotif.setSelectedIndex((int)tblAbsence.getModel().getValueAt(index, 3)-1);			
+				String datedebut = (String)tblAbsence.getModel().getValueAt(index, 1);
+				String datefin = (String)tblAbsence.getModel().getValueAt(index, 2);
+				dtcDateDeb.setDate(new SimpleDateFormat(FORMATDATE).parse(datedebut));
+				dtcDateFin.setDate(new SimpleDateFormat(FORMATDATE).parse(datefin));
 			}
 			catch (Exception e) {
 				e.getStackTrace();
@@ -808,62 +838,72 @@ public class Gestion extends JFrame {
 			afficheInfo(INFOSELECTION);
 		}
 	}
-	
+		
 	/**
-	 * événement clic sur btnSaveAbs
+	 * événement clic sur btnSaveAbs : sauvegarde d'absence après confirmation de l'utilisateur
 	 */
 	private void btnSaveAbs_clic() {
-		if (dtcDateDeb.getDate() != null && dtcDateFin.getDate() != null && dtcDateDeb.getDate().before(dtcDateFin.getDate())) {
-			int idpersonnel = (int)tblPersonnel.getModel().getValueAt(tblPersonnel.getSelectedRow(), 0);
-			Date datedebut = dtcDateDeb.getDate();
-			int idmotif = cboMotif.getSelectedIndex()+1;
-			String motif = cboMotif.getSelectedItem().toString();
-			Date datefin = dtcDateFin.getDate();				
-			Absence absence = new Absence(idpersonnel, datedebut, datefin, idmotif, motif);
-			// demande de confirmation			
-			int choix = 0;
-			if (Boolean.TRUE.equals(ajoutAbsEnCours)) {
-				choix = confirmMsgBoxAbs("Ajouter une entrée avec ces informations ?", absence);
+		if (dtcDateDeb.getDate() != null && dtcDateFin.getDate() != null) {
+			Date datedebut = supprTemps(dtcDateDeb.getDate());
+			Date datefin = supprTemps(dtcDateFin.getDate());
+			// si la date de début est strictement antérieure à la date de fin
+			if (datedebut.before(datefin)) {
+				int idpersonnel = (int)tblPersonnel.getModel().getValueAt(tblPersonnel.getSelectedRow(), 0);
+				int idmotif = cboMotif.getSelectedIndex()+1;
+				String motif = cboMotif.getSelectedItem().toString();				
+				Absence absence = new Absence(idpersonnel, datedebut, datefin, idmotif, motif);
+				// demande de confirmation
+				int choix = confirmAjoutModifSuppr(absence);			
+				if (choix == 0) {
+					if (Boolean.TRUE.equals(modifAbsEnCours)) {
+						String dateDebOrigString = (String)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 1);
+						try {
+							Date dateDebOriginale = new SimpleDateFormat(FORMATDATE).parse(dateDebOrigString);
+							controle.majAbsence(absence, dateDebOriginale);
+						}
+						catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+					else if (Boolean.TRUE.equals(ajoutAbsEnCours)) {
+						controle.creeAbsence(absence);
+					}
+					finModifAbs();
+					chargeAbsences(idpersonnel);
+				}
 			}
-			else if (Boolean.TRUE.equals(modifAbsEnCours)) {
-				choix = confirmMsgBoxAbs("Mettre à jour l'entrée avec ces informations ?", absence);
+			// sinon, si la date de début n'est pas strictement antérieure à la date de fin
+			else {
+				afficheInfo("La date de fin doit être postérieure à la date de début");
 			}			
-			if (choix == 0) {
-				if (Boolean.TRUE.equals(modifAbsEnCours)) {
-					Date dateDebOriginale = (Date)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 1);
-					controle.majAbsence(absence, dateDebOriginale);
-				}
-				else if (Boolean.TRUE.equals(ajoutAbsEnCours)) {
-					controle.creeAbsence(absence);
-				}
-				finModifAbs();
-				chargeAbsences(idpersonnel);
-			}
 		}
-		// si l'un des deux champs de date contient une donnée erronée ou nulle
-		else if (dtcDateDeb.getDate() == null || dtcDateFin.getDate() == null) {
-			afficheInfo("Tous les champs doivent être correctement remplis");
-		}		
-		// si la date de fin est antérieure ou égale à la date de début
 		else {
-			afficheInfo("La date de fin doit être postérieure à la date de début");						
-		}				
+			afficheInfo("Tous les champs doivent être correctement remplis");			
+		}			
 	}
 	
 	/**
-	 * événement clic sur btnSuppAbs
+	 * événement clic sur btnSuppAbs : suppression d'absence après confirmation de l'utilisateur
 	 */
 	private void btnSuppAbs_clic() {
 		if (tblAbsence.getSelectedRow() != -1) {
 			tblAbsence.setEnabled(false);
-			String question = "Supprimer cette absence ?";
 			int idpersonnel = (int)tblPersonnel.getModel().getValueAt(tblPersonnel.getSelectedRow(), 0);
-			Date datedebut = (Date)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 1);
-		    Date datefin = (Date)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 2);		
+			String dateDebutString = (String)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 1);
+			String dateFinString = (String)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 2);
+			Date datedebut = null;
+			Date datefin = null;
+			try {
+				datedebut = new SimpleDateFormat(FORMATDATE).parse(dateDebutString);
+				datefin = new SimpleDateFormat(FORMATDATE).parse(dateFinString);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 			int idmotif = (int)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 3);
 			String motif = (String)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 4);			
 			Absence absence = new Absence(idpersonnel, datedebut, datefin, idmotif, motif);
-			int choix = confirmMsgBoxAbs(question, absence);
+			int choix = confirmAjoutModifSuppr(absence);
 			if (choix == 0) {
 				controle.supprAbsence(absence);
 				chargeAbsences(idpersonnel);				
