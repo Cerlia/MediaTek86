@@ -31,10 +31,8 @@ public class Controle {
 	 * constructeur permettant d'ouvrir la fenêtre de login
 	 */
 	public Controle() {
-		this.frmGestion = new Gestion(this);
-		this.frmGestion.setVisible(true);
-		// this.frmLogin = new Login(this);
-		// this.frmLogin.setVisible(true);
+		this.frmLogin = new Login(this);
+		this.frmLogin.setVisible(true);
 	}
 	
 	/**
@@ -109,6 +107,7 @@ public class Controle {
 	 */
 	public void supprPersonnel(Personnel personnel) {
 		AccesDonnees.supprPersonnel(personnel);
+		AccesDonnees.supprToutesAbsences(personnel);
 	}
 	
 	/**

@@ -234,4 +234,16 @@ public class AccesDonnees {
 		ConnexionBDD conn = ConnexionBDD.getInstance(connectionURL, login, pwd);
         conn.requeteUpdate(req, lesParametres);
 	}
+	
+	/**
+	 * demande à ConnexionBDD de supprimer des enregistrements dans la table absence
+	 * @param personnel membre du personnel dont on veut supprimer les absences
+	 */
+	public static void supprToutesAbsences(Personnel personnel) {
+		String req = "delete from absence where idpersonnel = ?;";
+		ArrayList<Object> lesParametres = new ArrayList<>();
+		lesParametres.add(personnel.getIdpersonnel());
+		ConnexionBDD conn = ConnexionBDD.getInstance(connectionURL, login, pwd);
+        conn.requeteUpdate(req, lesParametres);
+	}
 }

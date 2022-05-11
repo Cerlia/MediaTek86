@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -29,6 +30,7 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import com.toedter.calendar.JDateChooser;
 
+
 /**
  * classe permettant l'affichage de la fenêtre principale
  * @author Claire Stalter
@@ -40,6 +42,10 @@ public class Gestion extends JFrame {
 	 * constante de message "Une ligne doit être sélectionnée"
 	 */
 	private static final String INFOSELECTION = "Une ligne doit être sélectionnée";
+	/**
+	 * constante du format de la date
+	 */
+	private static final String FORMATDATE = "dd/MM/yyyy";
 	/**
 	 * instance de Controle permettant les échanges avec le contrôleur
 	 */
@@ -142,7 +148,7 @@ public class Gestion extends JFrame {
 		this.controle = controle;
 		setTitle("MediaTek86 - Gestion du personnel");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(200, 100, 1100, 725);
+		setBounds(200, 100, 1100, 660);
 		JPanel contentPane = new JPanel();
 		contentPane.setLocation(-495, -538);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -158,12 +164,12 @@ public class Gestion extends JFrame {
 		contentPane.add(lblTitre1);
 				
 		lblAjModifPers = new JLabel("Ajouter une personne");
-		lblAjModifPers.setBounds(10, 446, 627, 14);
+		lblAjModifPers.setBounds(10, 382, 627, 14);
 		contentPane.add(lblAjModifPers);
 		
 		pnlPersonnel = new JPanel();
 		pnlPersonnel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		pnlPersonnel.setBounds(10, 29, 627, 390);
+		pnlPersonnel.setBounds(10, 29, 627, 322);
 		contentPane.add(pnlPersonnel);
 		pnlPersonnel.setLayout(null);
 		
@@ -174,7 +180,7 @@ public class Gestion extends JFrame {
 				btnAjoutPers_clic();
 			}
 		});
-		btnAjoutPers.setBounds(10, 356, 95, 23);
+		btnAjoutPers.setBounds(12, 288, 95, 23);
 		pnlPersonnel.add(btnAjoutPers);
 		
 		Button btnModifPers = new Button("Modifier");
@@ -184,7 +190,7 @@ public class Gestion extends JFrame {
 				btnModifPers_clic();
 			}
 		});
-		btnModifPers.setBounds(111, 356, 95, 23);
+		btnModifPers.setBounds(113, 288, 95, 23);
 		pnlPersonnel.add(btnModifPers);
 		
 		Button btnSuppPers = new Button("Supprimer");
@@ -194,7 +200,7 @@ public class Gestion extends JFrame {
 				btnSuppPers_clic();
 			}
 		});
-		btnSuppPers.setBounds(212, 356, 95, 23);
+		btnSuppPers.setBounds(214, 288, 95, 23);
 		pnlPersonnel.add(btnSuppPers);
 		
 		btnGerAbs = new Button("Gérer les absences");
@@ -204,11 +210,11 @@ public class Gestion extends JFrame {
 				btnGerAbs_clic();
 			}
 		});
-		btnGerAbs.setBounds(430, 356, 185, 23);
+		btnGerAbs.setBounds(432, 288, 185, 23);
 		pnlPersonnel.add(btnGerAbs);
 		
 		JScrollPane scpPersonnel = new JScrollPane();
-		scpPersonnel.setBounds(12, 12, 603, 329);
+		scpPersonnel.setBounds(12, 12, 603, 266);
 		pnlPersonnel.add(scpPersonnel);
 		
 		tblPersonnel = new JTable();
@@ -220,7 +226,7 @@ public class Gestion extends JFrame {
 		
 		pnlModifPersonnel = new JPanel();
 		pnlModifPersonnel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		pnlModifPersonnel.setBounds(10, 465, 627, 206);
+		pnlModifPersonnel.setBounds(10, 401, 627, 206);
 		contentPane.add(pnlModifPersonnel);
 		pnlModifPersonnel.setLayout(null);
 		
@@ -297,12 +303,12 @@ public class Gestion extends JFrame {
 		contentPane.add(lblAbsences);
 		
 		lblAjModifAbs = new JLabel("Ajouter une absence");
-		lblAjModifAbs.setBounds(683, 519, 387, 14);
+		lblAjModifAbs.setBounds(683, 455, 387, 14);
 		contentPane.add(lblAjModifAbs);
 		
 		pnlAbsence = new JPanel();
 		pnlAbsence.setBorder(new LineBorder(new Color(0, 0, 0)));
-		pnlAbsence.setBounds(683, 29, 389, 461);
+		pnlAbsence.setBounds(683, 29, 389, 384);
 		contentPane.add(pnlAbsence);
 		pnlAbsence.setLayout(null);
 		
@@ -313,7 +319,7 @@ public class Gestion extends JFrame {
 				btnAjoutAbs_clic();
 			}
 		});
-		btnAjoutAbs.setBounds(43, 428, 95, 23);
+		btnAjoutAbs.setBounds(49, 351, 95, 23);
 		pnlAbsence.add(btnAjoutAbs);
 		
 		Button btnModifAbs = new Button("Modifier");
@@ -323,7 +329,7 @@ public class Gestion extends JFrame {
 				btnModifAbs_clic();
 			}
 		});
-		btnModifAbs.setBounds(145, 428, 95, 23);
+		btnModifAbs.setBounds(151, 351, 95, 23);
 		pnlAbsence.add(btnModifAbs);
 		
 		Button btnSuppAbs = new Button("Supprimer");
@@ -333,12 +339,12 @@ public class Gestion extends JFrame {
 				btnSuppAbs_clic();
 			}
 		});
-		btnSuppAbs.setBounds(246, 428, 95, 23);
+		btnSuppAbs.setBounds(252, 351, 95, 23);
 		pnlAbsence.add(btnSuppAbs);
 				
 		pnlModifAbsence = new JPanel();
 		pnlModifAbsence.setBorder(new LineBorder(new Color(0, 0, 0)));
-		pnlModifAbsence.setBounds(683, 538, 389, 133);
+		pnlModifAbsence.setBounds(683, 474, 389, 133);
 		contentPane.add(pnlModifAbsence);
 		pnlModifAbsence.setLayout(null);
 		
@@ -381,13 +387,15 @@ public class Gestion extends JFrame {
 		dtcDateDeb = new JDateChooser();
 		dtcDateDeb.setBounds(108, 61, 142, 20);
 		pnlModifAbsence.add(dtcDateDeb);
+		dtcDateDeb.setDateFormatString(FORMATDATE);
 		
 		dtcDateFin = new JDateChooser();
 		dtcDateFin.setBounds(108, 97, 142, 20);
 		pnlModifAbsence.add(dtcDateFin);
+		dtcDateFin.setDateFormatString(FORMATDATE);
 				
 		JScrollPane scpAbsences = new JScrollPane();
-		scpAbsences.setBounds(12, 12, 365, 402);
+		scpAbsences.setBounds(12, 12, 365, 323);
 		pnlAbsence.add(scpAbsences);
 		
 		tblAbsence = new JTable();
@@ -446,7 +454,7 @@ public class Gestion extends JFrame {
 		List<Absence> lesAbsences = controle.getAbsences(idpersonnel);
 		tblAbsence.setModel(modelTblAbs(lesAbsences));		
 		tblAbsence.getColumnModel().getColumn(0).setPreferredWidth(30);
-		tblAbsence.getColumnModel().getColumn(1).setPreferredWidth(30);
+		tblAbsence.getColumnModel().getColumn(1).setPreferredWidth(30);		
 		tblAbsence.getColumnModel().getColumn(2).setPreferredWidth(30);
 		tblAbsence.getColumnModel().getColumn(3).setPreferredWidth(60);
 		tblAbsence.removeColumn(tblAbsence.getColumnModel().getColumn(0));
@@ -499,10 +507,14 @@ public class Gestion extends JFrame {
 		Object[][] donnees = new Object[lesAbsences.size()][5];
 		for (int i = 0; i < lesAbsences.size(); i++) {
 			donnees[i][0] = lesAbsences.get(i).getIdpersonnel();
-			donnees[i][1] = lesAbsences.get(i).getDatedebut();
+			donnees[i][1] = lesAbsences.get(i).getDatedebut();				
 			donnees[i][2] = lesAbsences.get(i).getDatefin();
 			donnees[i][3] = lesAbsences.get(i).getIdmotif();
 			donnees[i][4] = lesAbsences.get(i).getMotif();
+			// formatage des dates
+			SimpleDateFormat date = new SimpleDateFormat(FORMATDATE);
+			donnees[i][1] = date.format(donnees[i][1]);
+			donnees[i][2] = date.format(donnees[i][2]);
 		}
 		return new DefaultTableModel(donnees, colonnes);
 	}
@@ -566,7 +578,7 @@ public class Gestion extends JFrame {
 					"\nTéléphone : " + personnel.getTel() + "\nE-Mail : " + personnel.getMail() + "\n\n" + question;			
 		}
 		else if (objet instanceof Absence absence) {
-			SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat formater = new SimpleDateFormat(FORMATDATE);
 		    String datedebut = formater.format(absence.getDatedebut());
 		    String datefin = formater.format(absence.getDatefin());
 		    message = "Début : " + datedebut + "\nFin : " + datefin + "\nMotif : " + absence.getMotif() + "\n\n" + question;		    
@@ -811,10 +823,12 @@ public class Gestion extends JFrame {
 				btnGerAbs.setEnabled(false);
 				tblAbsence.setEnabled(false);
 				int index = tblAbsence.getSelectedRow();
-				// copie des données dans les champs correspondants				
-				cboMotif.setSelectedIndex((int)tblAbsence.getModel().getValueAt(index, 3)-1);
-				dtcDateDeb.setDate((Date)tblAbsence.getModel().getValueAt(index, 1));
-				dtcDateFin.setDate((Date)tblAbsence.getModel().getValueAt(index, 2));					
+				// copie et formatage des données dans les champs correspondants				
+				cboMotif.setSelectedIndex((int)tblAbsence.getModel().getValueAt(index, 3)-1);			
+				String datedebut = (String)tblAbsence.getModel().getValueAt(index, 1);
+				String datefin = (String)tblAbsence.getModel().getValueAt(index, 2);
+				dtcDateDeb.setDate(new SimpleDateFormat(FORMATDATE).parse(datedebut));
+				dtcDateFin.setDate(new SimpleDateFormat(FORMATDATE).parse(datefin));
 			}
 			catch (Exception e) {
 				e.getStackTrace();
@@ -842,8 +856,14 @@ public class Gestion extends JFrame {
 				int choix = confirmAjoutModifSuppr(absence);			
 				if (choix == 0) {
 					if (Boolean.TRUE.equals(modifAbsEnCours)) {
-						Date dateDebOriginale = (Date)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 1);
-						controle.majAbsence(absence, dateDebOriginale);
+						String dateDebOrigString = (String)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 1);
+						try {
+							Date dateDebOriginale = new SimpleDateFormat(FORMATDATE).parse(dateDebOrigString);
+							controle.majAbsence(absence, dateDebOriginale);
+						}
+						catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
 					else if (Boolean.TRUE.equals(ajoutAbsEnCours)) {
 						controle.creeAbsence(absence);
@@ -869,8 +889,17 @@ public class Gestion extends JFrame {
 		if (tblAbsence.getSelectedRow() != -1) {
 			tblAbsence.setEnabled(false);
 			int idpersonnel = (int)tblPersonnel.getModel().getValueAt(tblPersonnel.getSelectedRow(), 0);
-			Date datedebut = (Date)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 1);
-			Date datefin = (Date)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 2);		
+			String dateDebutString = (String)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 1);
+			String dateFinString = (String)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 2);
+			Date datedebut = null;
+			Date datefin = null;
+			try {
+				datedebut = new SimpleDateFormat(FORMATDATE).parse(dateDebutString);
+				datefin = new SimpleDateFormat(FORMATDATE).parse(dateFinString);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 			int idmotif = (int)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 3);
 			String motif = (String)tblAbsence.getModel().getValueAt(tblAbsence.getSelectedRow(), 4);			
 			Absence absence = new Absence(idpersonnel, datedebut, datefin, idmotif, motif);

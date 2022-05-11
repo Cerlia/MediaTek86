@@ -8,7 +8,7 @@ import controller.Controle;
 public class Program {
 	/**
 	 * point d'entrée de l'application
-	 * @param args
+	 * @param args arguments de la ligne de commande
 	 */
 	public static void main(String[] args)
 	{

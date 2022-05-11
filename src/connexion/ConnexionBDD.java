@@ -39,7 +39,12 @@ public class ConnexionBDD {
 				connexion = DriverManager.getConnection(connectionString, login, pwd);			
 			}
 			catch(SQLException e) {
-				System.out.println("Erreur d'accès à la BDD");
+				JOptionPane.showConfirmDialog(null,
+						"Connexion à la base de données impossible",
+						"Erreur",
+						JOptionPane.DEFAULT_OPTION,
+						JOptionPane.ERROR_MESSAGE,
+						null);				
 				System.exit(0);
 			}			
 		}		
