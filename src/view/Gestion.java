@@ -148,7 +148,7 @@ public class Gestion extends JFrame {
 		this.controle = controle;
 		setTitle("MediaTek86 - Gestion du personnel");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(200, 100, 1100, 725);
+		setBounds(200, 100, 1100, 670);
 		JPanel contentPane = new JPanel();
 		contentPane.setLocation(-495, -538);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -164,12 +164,12 @@ public class Gestion extends JFrame {
 		contentPane.add(lblTitre1);
 				
 		lblAjModifPers = new JLabel("Ajouter une personne");
-		lblAjModifPers.setBounds(10, 446, 627, 14);
+		lblAjModifPers.setBounds(10, 390, 627, 14);
 		contentPane.add(lblAjModifPers);
 		
 		pnlPersonnel = new JPanel();
 		pnlPersonnel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		pnlPersonnel.setBounds(10, 29, 627, 390);
+		pnlPersonnel.setBounds(10, 29, 627, 315);
 		contentPane.add(pnlPersonnel);
 		pnlPersonnel.setLayout(null);
 		
@@ -180,7 +180,7 @@ public class Gestion extends JFrame {
 				btnAjoutPers_clic();
 			}
 		});
-		btnAjoutPers.setBounds(10, 356, 95, 23);
+		btnAjoutPers.setBounds(10, 283, 95, 23);
 		pnlPersonnel.add(btnAjoutPers);
 		
 		Button btnModifPers = new Button("Modifier");
@@ -190,7 +190,7 @@ public class Gestion extends JFrame {
 				btnModifPers_clic();
 			}
 		});
-		btnModifPers.setBounds(111, 356, 95, 23);
+		btnModifPers.setBounds(111, 283, 95, 23);
 		pnlPersonnel.add(btnModifPers);
 		
 		Button btnSuppPers = new Button("Supprimer");
@@ -200,7 +200,7 @@ public class Gestion extends JFrame {
 				btnSuppPers_clic();
 			}
 		});
-		btnSuppPers.setBounds(212, 356, 95, 23);
+		btnSuppPers.setBounds(212, 283, 95, 23);
 		pnlPersonnel.add(btnSuppPers);
 		
 		btnGerAbs = new Button("Gérer les absences");
@@ -210,11 +210,11 @@ public class Gestion extends JFrame {
 				btnGerAbs_clic();
 			}
 		});
-		btnGerAbs.setBounds(430, 356, 185, 23);
+		btnGerAbs.setBounds(430, 283, 185, 23);
 		pnlPersonnel.add(btnGerAbs);
 		
 		JScrollPane scpPersonnel = new JScrollPane();
-		scpPersonnel.setBounds(12, 12, 603, 329);
+		scpPersonnel.setBounds(12, 12, 603, 265);
 		pnlPersonnel.add(scpPersonnel);
 		
 		tblPersonnel = new JTable();
@@ -226,7 +226,7 @@ public class Gestion extends JFrame {
 		
 		pnlModifPersonnel = new JPanel();
 		pnlModifPersonnel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		pnlModifPersonnel.setBounds(10, 465, 627, 206);
+		pnlModifPersonnel.setBounds(10, 409, 627, 206);
 		contentPane.add(pnlModifPersonnel);
 		pnlModifPersonnel.setLayout(null);
 		
@@ -303,12 +303,12 @@ public class Gestion extends JFrame {
 		contentPane.add(lblAbsences);
 		
 		lblAjModifAbs = new JLabel("Ajouter une absence");
-		lblAjModifAbs.setBounds(683, 519, 387, 14);
+		lblAjModifAbs.setBounds(683, 462, 387, 14);
 		contentPane.add(lblAjModifAbs);
 		
 		pnlAbsence = new JPanel();
 		pnlAbsence.setBorder(new LineBorder(new Color(0, 0, 0)));
-		pnlAbsence.setBounds(683, 29, 389, 461);
+		pnlAbsence.setBounds(683, 29, 389, 399);
 		contentPane.add(pnlAbsence);
 		pnlAbsence.setLayout(null);
 		
@@ -319,7 +319,7 @@ public class Gestion extends JFrame {
 				btnAjoutAbs_clic();
 			}
 		});
-		btnAjoutAbs.setBounds(43, 428, 95, 23);
+		btnAjoutAbs.setBounds(41, 367, 95, 23);
 		pnlAbsence.add(btnAjoutAbs);
 		
 		Button btnModifAbs = new Button("Modifier");
@@ -329,7 +329,7 @@ public class Gestion extends JFrame {
 				btnModifAbs_clic();
 			}
 		});
-		btnModifAbs.setBounds(145, 428, 95, 23);
+		btnModifAbs.setBounds(143, 367, 95, 23);
 		pnlAbsence.add(btnModifAbs);
 		
 		Button btnSuppAbs = new Button("Supprimer");
@@ -339,12 +339,12 @@ public class Gestion extends JFrame {
 				btnSuppAbs_clic();
 			}
 		});
-		btnSuppAbs.setBounds(246, 428, 95, 23);
+		btnSuppAbs.setBounds(244, 367, 95, 23);
 		pnlAbsence.add(btnSuppAbs);
 				
 		pnlModifAbsence = new JPanel();
 		pnlModifAbsence.setBorder(new LineBorder(new Color(0, 0, 0)));
-		pnlModifAbsence.setBounds(683, 538, 389, 133);
+		pnlModifAbsence.setBounds(683, 481, 389, 134);
 		contentPane.add(pnlModifAbsence);
 		pnlModifAbsence.setLayout(null);
 		
@@ -395,7 +395,7 @@ public class Gestion extends JFrame {
 		dtcDateFin.setDateFormatString(FORMATDATE);
 				
 		JScrollPane scpAbsences = new JScrollPane();
-		scpAbsences.setBounds(12, 12, 365, 402);
+		scpAbsences.setBounds(12, 12, 365, 349);
 		pnlAbsence.add(scpAbsences);
 		
 		tblAbsence = new JTable();
