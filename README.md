@@ -1,7 +1,7 @@
 # MediaTek86
 Cet outil de gestion du personnel a été réalisé dans le cadre d'un atelier de professionnalisation de 1re année de BTS SIO.
 
-Objectif de l'atelier : développer application de bureau qui va permettre de gérer le personnel de chaque médiathèque, leur affectation à un service et leurs absences. Plus précisément, l'application devra permettre au responsable d'effectuer les actions suivantes :
+Objectif de l'atelier : développer un application de bureau permettant de gérer le personnel de médiathèques, leur affectation à un service et leurs absences. Plus précisément, l'application permet au responsable d'effectuer les actions suivantes :
 - se connecter,
 - afficher la liste du personnel,
 - ajouter un membre du personnel,
