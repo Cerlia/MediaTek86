@@ -12,8 +12,8 @@ Objectif de l'atelier : développer un application de bureau permettant de gére
 - modifier une absence,
 - supprimer une absence.
 
-Environnement utilisé :
+Environnement nécessaire :
 - version 17 de Java SE Development Kit 17
-- Wamp64 pour le serveur de bases de données
+- WAMP pour le serveur de bases de données : créer une base de données "mediatek86" et importer les données en utilisant le script de restauration DBRestore_MediaTek86.sql dans phpMyAdmin
 
 Tous les détails du projet se trouvent dans le fichier "Compte-rendu d'activité.pdf"
